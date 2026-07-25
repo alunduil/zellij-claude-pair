@@ -1,0 +1,78 @@
+---
+# Install: pre-commit install --hook-type pre-commit --hook-type commit-msg
+# Run manually: pre-commit run --all-files
+# Update pins: pre-commit autoupdate
+#
+# The commit-msg hook type is not optional here: release-plz derives the
+# version bump and changelog from commit subjects, so a non-conventional
+# subject reaching main silently corrupts the next release.
+
+exclude: |
+  (?x)^(
+    \.git/.*|
+    CHANGELOG\.md
+  )$
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ["--maxkb=1024"]
+      - id: check-case-conflict
+
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
+
+      - id: check-json
+      - id: check-yaml
+
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.48.0
+    hooks:
+      - id: markdownlint
+        args: ["--fix"]
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.11.0.1
+    hooks:
+      - id: shellcheck
+        args: ["--severity=warning"]
+
+  # No `-d relaxed` arg: yamllint's -d overrides file discovery entirely,
+  # which would make .yamllint.yaml dead config. The file extends relaxed
+  # itself, so the tuning there is what applies.
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.38.0
+    hooks:
+      - id: yamllint
+
+  # actionlint owns workflow YAML validation (schema, expression syntax,
+  # shellcheck over run: blocks); check-yaml and yamllint cover the basic
+  # parse and style smells on the same files.
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.12
+    hooks:
+      - id: actionlint
+
+  # Keeps Cargo.toml and deny.toml formatted before either exists, so the
+  # crate scaffold lands already-formatted rather than being reformatted.
+  - repo: https://github.com/ComPWA/taplo-pre-commit
+    rev: v0.9.3
+    hooks:
+      - id: taplo-format
+      - id: taplo-lint
+        args: ["--no-schema"]
+
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.4.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
