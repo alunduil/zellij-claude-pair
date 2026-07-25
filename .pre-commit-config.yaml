@@ -7,6 +7,13 @@
 # version bump and changelog from commit subjects, so a non-conventional
 # subject reaching main silently corrupts the next release.
 
+# Hooks are added when the repo gains something for them to check, not in
+# anticipation of it. A hook with no matching files cannot be exercised,
+# so its arguments and config are unjustified guesses. Pending additions
+# are tracked on the issue that introduces the file type: TOML/taplo on
+# #1, markdown/markdownlint on #4, JSON/check-json on #5, and shell
+# scripts/shellcheck on #24.
+
 exclude: |
   (?x)^(
     \.git/.*|
@@ -28,23 +35,9 @@ repos:
       - id: mixed-line-ending
         args: ["--fix=lf"]
 
-      - id: check-json
       - id: check-yaml
 
-      - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
-
-  - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.48.0
-    hooks:
-      - id: markdownlint
-        args: ["--fix"]
-
-  - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.11.0.1
-    hooks:
-      - id: shellcheck
-        args: ["--severity=warning"]
 
   # No `-d relaxed` arg: yamllint's -d overrides file discovery entirely,
   # which would make .yamllint.yaml dead config. The file extends relaxed
@@ -61,15 +54,6 @@ repos:
     rev: v1.7.12
     hooks:
       - id: actionlint
-
-  # Keeps Cargo.toml and deny.toml formatted before either exists, so the
-  # crate scaffold lands already-formatted rather than being reformatted.
-  - repo: https://github.com/ComPWA/taplo-pre-commit
-    rev: v0.9.3
-    hooks:
-      - id: taplo-format
-      - id: taplo-lint
-        args: ["--no-schema"]
 
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v4.4.0
