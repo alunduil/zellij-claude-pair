@@ -1,5 +1,11 @@
 ---
-name: Pre-commit
+# Named by trigger, not by tool, so it stays the home for every-change
+# checks as they arrive: the Rust gates in #2 and the dependency review
+# in #26 land here as additional jobs rather than as new workflow files.
+# Cadence-named siblings to come: weekly.yml (#24), release.yml (#3).
+# PR-title validation (#25) stays separate because it needs the `edited`
+# action type, which would re-run these jobs on every title tweak.
+name: Pull Request
 
 on:
   push:
@@ -16,6 +22,7 @@ concurrency:
 
 jobs:
   hooks:
+    name: Run pre-commit hooks
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
