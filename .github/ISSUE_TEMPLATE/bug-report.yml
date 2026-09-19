@@ -51,16 +51,33 @@ body:
     validations:
       required: true
 
+  - type: input
+    id: plugin-version
+    attributes:
+      label: zellij-claude-pair version
+      description: >-
+        A released version, or `main@<sha>` if you built from source.
+      placeholder: 0.1.0
+    validations:
+      required: true
+
+  - type: input
+    id: zellij-version
+    attributes:
+      label: zellij version
+      description: Output of `zellij --version`.
+      placeholder: zellij 0.45.1
+    validations:
+      required: true
+
   - type: textarea
     id: environment
     attributes:
-      label: Environment
+      label: Other environment details
       description: >-
-        Share any details about your setup that might be relevant.
-        Fill in only what applies.
+        Terminal emulator and OS, plus the git and gh versions when the bug
+        touches repository state. Fill in only what applies.
       placeholder: |
-        - zellij-claude-pair: 0.1.0
-        - zellij: 0.43.1 (run `zellij --version`)
         - Terminal: WezTerm 20240203
         - OS: Debian 13
         - git: 2.47.0
@@ -71,13 +88,14 @@ body:
     attributes:
       label: Logs or screenshots
       description: >-
-        Paste relevant output from the zellij log
-        (`~/.cache/zellij/zellij-log/zellij.log`), error messages, or
-        attach screenshots of the affected pane.
+        Paste relevant output from the zellij log, error messages, or
+        attach screenshots of the affected pane. The log lives at
+        `${TMPDIR:-/tmp}/zellij-$(id -u)/zellij-log/zellij.log`.
 
   - type: textarea
     id: additional-context
     attributes:
       label: Additional context
       description: >-
-        Anything else that helps: related issues, workarounds tried, frequency.
+        Anything else that helps: related issues, links, screenshots, or
+        workarounds tried.

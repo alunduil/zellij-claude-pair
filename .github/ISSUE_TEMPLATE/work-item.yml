@@ -62,4 +62,5 @@ body:
     attributes:
       label: Additional context
       description: >-
-        Links, screenshots, related issues, or anything else that helps.
+        Anything else that helps: related issues, links, screenshots, or
+        prior attempts.

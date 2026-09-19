@@ -60,4 +60,5 @@ body:
     attributes:
       label: Additional context
       description: >-
-        Mockups, screenshots, links, or references that illustrate the idea.
+        Anything else that helps: related issues, links, screenshots, or
+        mockups that illustrate the idea.
