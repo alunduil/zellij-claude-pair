@@ -17,7 +17,9 @@ body:
     id: summary
     attributes:
       label: Summary
-      description: A short description of the bug.
+      description: >-
+        What you were doing and what went wrong, in a sentence or two.
+        The blow-by-blow belongs in the fields below.
     validations:
       required: true
 
@@ -39,7 +41,9 @@ body:
     id: actual-behavior
     attributes:
       label: Actual behavior
-      description: What happens when you follow the steps above?
+      description: >-
+        What you observed after the steps above. Quote exact output or
+        on-screen wording where you have it.
     validations:
       required: true
 
@@ -97,5 +101,5 @@ body:
     attributes:
       label: Additional context
       description: >-
-        Anything else that helps: related issues, links, screenshots, or
-        workarounds tried.
+        Anything else that helps: related issues, links, how often it
+        happens, or workarounds you tried.
