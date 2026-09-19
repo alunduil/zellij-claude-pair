@@ -1,0 +1,83 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+---
+name: Bug report
+description: Report incorrect behavior so it can be fixed.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template when something is not working the way you expect.
+        For the title, briefly describe what went wrong, for example:
+        "Branch widget keeps showing the previous branch after a checkout".
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: A short description of the bug.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to reproduce
+      description: >-
+        Minimal steps to trigger the bug. Include the zellij layout or
+        keybinding you used and the state of the repo in the pane.
+      placeholder: |
+        1. Open a zellij session with the pair layout
+        2. Run `git switch -c scratch` in the pane
+        3. Observe …
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual behavior
+      description: What happens when you follow the steps above?
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: What should happen instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: >-
+        Share any details about your setup that might be relevant.
+        Fill in only what applies.
+      placeholder: |
+        - zellij-claude-pair: 0.1.0
+        - zellij: 0.43.1 (run `zellij --version`)
+        - Terminal: WezTerm 20240203
+        - OS: Debian 13
+        - git: 2.47.0
+        - gh: 2.63.0
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: >-
+        Paste relevant output from the zellij log
+        (`~/.cache/zellij/zellij-log/zellij.log`), error messages, or
+        attach screenshots of the affected pane.
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: >-
+        Anything else that helps: related issues, workarounds tried, frequency.
