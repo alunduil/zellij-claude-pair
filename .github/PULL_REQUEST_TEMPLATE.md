@@ -6,7 +6,7 @@
 ## Gotchas
 
 <!-- One bullet per surprise: where to spend attention and why.
-     Completes "watch out — ___", not "I chose ___ because ___".
+     Rationale belongs in Summary.
      Delete this section if nothing surprises. -->
 
 -

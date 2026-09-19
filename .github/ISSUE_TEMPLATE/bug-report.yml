@@ -9,7 +9,6 @@ body:
   - type: markdown
     attributes:
       value: |
-        Use this template when something is not working the way you expect.
         For the title, briefly describe what went wrong, for example:
         "Branch widget keeps showing the previous branch after a checkout".
 
@@ -19,7 +18,7 @@ body:
       label: Summary
       description: >-
         What you were doing and what went wrong, in a sentence or two.
-        The blow-by-blow belongs in the fields below.
+        Details go in the fields below.
     validations:
       required: true
 
@@ -92,14 +91,14 @@ body:
     attributes:
       label: Logs or screenshots
       description: >-
-        Paste relevant output from the zellij log, error messages, or
-        attach screenshots of the affected pane. The log lives at
-        `${TMPDIR:-/tmp}/zellij-$(id -u)/zellij-log/zellij.log`.
+        Paste output from the zellij log at
+        `${TMPDIR:-/tmp}/zellij-$(id -u)/zellij-log/zellij.log`. Error
+        messages and screenshots of the affected pane also help.
 
   - type: textarea
     id: additional-context
     attributes:
       label: Additional context
       description: >-
-        Anything else that helps: related issues, links, how often it
-        happens, or workarounds you tried.
+        Related issues, links, how often it happens, and workarounds you
+        tried.
