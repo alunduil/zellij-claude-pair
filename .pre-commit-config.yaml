@@ -11,8 +11,7 @@
 # anticipation of it. A hook with no matching files cannot be exercised,
 # so its arguments and config are unjustified guesses. Pending additions
 # are tracked on the issue that introduces the file type: TOML/taplo on
-# #1, markdown/markdownlint on #4, JSON/check-json on #5, and shell
-# scripts/shellcheck on #24.
+# #1, JSON/check-json on #5, and shell scripts/shellcheck on #24.
 
 exclude: |
   (?x)^(
@@ -54,6 +53,17 @@ repos:
     rev: v1.7.12
     hooks:
       - id: actionlint
+
+  # cli2 rather than markdownlint-cli (what woodland-generators pins) for
+  # its per-directory config: .github/.markdownlint.yaml exempts the PR
+  # template from MD041 while the rule stays on for the docs #4 adds. The
+  # root carries no config file — the default rule set produces no other
+  # violation here, and an override no file has earned is a guess.
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.23.2
+    hooks:
+      - id: markdownlint-cli2
+        args: ["--fix"]
 
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v4.4.0
