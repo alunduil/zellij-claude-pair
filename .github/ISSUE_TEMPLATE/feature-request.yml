@@ -1,0 +1,58 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+---
+name: Feature request
+description: Suggest a feature centered around a user journey.
+labels: [idea]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Focus on the user journey you want to affect. The implementation
+        is ours to work out.
+
+  - type: textarea
+    id: user-story
+    attributes:
+      label: What would you like to be able to do?
+      description: Include why it matters to you.
+      placeholder: >-
+        I'd like to … because …
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-experience
+    attributes:
+      label: What do you do today?
+      description: What's frustrating or missing about it?
+    validations:
+      required: true
+
+  - type: textarea
+    id: desired-experience
+    attributes:
+      label: How should it work?
+      description: Walk through it step by step.
+    validations:
+      required: true
+
+  - type: textarea
+    id: success-criteria
+    attributes:
+      label: How would you know this is working?
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Why you prefer the approach above.
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: >-
+        Related issues, links, screenshots, or mockups that illustrate the
+        idea.

@@ -1,0 +1,104 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+---
+name: Bug report
+description: Report incorrect behavior so it can be fixed.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For the title, briefly describe what went wrong, for example:
+        "Branch widget keeps showing the previous branch after a checkout".
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: >-
+        What you were doing and what went wrong, in a sentence or two.
+        Details go in the fields below.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to reproduce
+      description: >-
+        Minimal steps to trigger the bug. Include the zellij layout or
+        keybinding you used and the state of the repo in the pane.
+      placeholder: |
+        1. Open a zellij session with the pair layout
+        2. Run `git switch -c scratch` in the pane
+        3. Observe …
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual behavior
+      description: >-
+        What you observed after the steps above. Quote exact output or
+        on-screen wording where you have it.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: What should happen instead?
+    validations:
+      required: true
+
+  - type: input
+    id: plugin-version
+    attributes:
+      label: zellij-claude-pair version
+      description: >-
+        A released version, or `main@<sha>` if you built from source.
+      placeholder: 0.1.0
+    validations:
+      required: true
+
+  - type: input
+    id: zellij-version
+    attributes:
+      label: zellij version
+      description: Output of `zellij --version`.
+      placeholder: zellij 0.45.1
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Other environment details
+      description: >-
+        Terminal emulator and OS, plus the git and gh versions when the bug
+        touches repository state. Fill in only what applies.
+      placeholder: |
+        - Terminal: WezTerm 20240203
+        - OS: Debian 13
+        - git: 2.47.0
+        - gh: 2.63.0
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: >-
+        Paste output from the zellij log at
+        `${TMPDIR:-/tmp}/zellij-$(id -u)/zellij-log/zellij.log`. Error
+        messages and screenshots of the affected pane also help.
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: >-
+        Related issues, links, how often it happens, and workarounds you
+        tried.
