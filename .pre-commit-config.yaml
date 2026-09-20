@@ -12,12 +12,11 @@
 # so its arguments and config are unjustified guesses. Pending additions
 # are tracked on the issue that introduces the file type: TOML/taplo on
 # #1, JSON/check-json on #5, and shell scripts/shellcheck on #24.
-
-exclude: |
-  (?x)^(
-    \.git/.*|
-    CHANGELOG\.md
-  )$
+#
+# Exclusions follow the same rule, so there is no top-level exclude here:
+# pre-commit only ever passes tracked files to a hook, and the one file
+# that will need exempting -- CHANGELOG.md, which release-plz generates
+# and the fixers would fight -- arrives with #4.
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
