@@ -1,5 +1,4 @@
 ---
-# Scoped to .github/: GitHub splices these files into a text area as body
-# fragments rather than rendering them as documents, so the first line is
-# an H2 section heading and no H1 exists to find.
+# GitHub splices these files into an issue or PR body, where the text
+# opens at a section heading with no document title above it.
 MD041: false

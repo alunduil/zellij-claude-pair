@@ -1,22 +1,12 @@
 ---
 # Install: pre-commit install --hook-type pre-commit --hook-type commit-msg
-# Run manually: pre-commit run --all-files
-# Update pins: pre-commit autoupdate
 #
-# The commit-msg hook type is not optional here: release-plz derives the
-# version bump and changelog from commit subjects, so a non-conventional
-# subject reaching main silently corrupts the next release.
+# Omitting the commit-msg hook type fails silently: the subject gate stops
+# running, and release-plz reads subjects to derive the version bump and
+# the changelog.
 
-# Hooks are added when the repo gains something for them to check, not in
-# anticipation of it. A hook with no matching files cannot be exercised,
-# so its arguments and config are unjustified guesses. Pending additions
-# are tracked on the issue that introduces the file type: TOML/taplo on
-# #1, JSON/check-json on #5, and shell scripts/shellcheck on #24.
-#
-# Exclusions follow the same rule, so there is no top-level exclude here:
-# pre-commit only ever passes tracked files to a hook, and the one file
-# that will need exempting -- CHANGELOG.md, which release-plz generates
-# and the fixers would fight -- arrives with #4.
+# A hook belongs here once the repo holds files for it to check. Before
+# that its arguments cannot be exercised, so they would be guesses.
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -37,27 +27,20 @@ repos:
 
       - id: check-shebang-scripts-are-executable
 
-  # No `-d relaxed` arg: yamllint's -d overrides file discovery entirely,
-  # which would make .yamllint.yaml dead config. The file extends relaxed
-  # itself, so the tuning there is what applies.
+  # yamllint's -d replaces config-file discovery, so passing a preset here
+  # would make .yamllint.yaml dead config.
   - repo: https://github.com/adrienverge/yamllint
     rev: v1.38.0
     hooks:
       - id: yamllint
 
-  # actionlint owns workflow YAML validation (schema, expression syntax,
-  # shellcheck over run: blocks); check-yaml and yamllint cover the basic
-  # parse and style smells on the same files.
   - repo: https://github.com/rhysd/actionlint
     rev: v1.7.12
     hooks:
       - id: actionlint
 
-  # cli2 rather than markdownlint-cli (what woodland-generators pins) for
-  # its per-directory config: .github/.markdownlint.yaml exempts the PR
-  # template from MD041 while the rule stays on for the docs #4 adds. The
-  # root carries no config file — the default rule set produces no other
-  # violation here, and an override no file has earned is a guess.
+  # Pinned for per-directory config resolution, which .github/.markdownlint.yaml
+  # depends on to scope its rule to that directory.
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.23.2
     hooks:

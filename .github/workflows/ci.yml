@@ -1,14 +1,9 @@
 ---
-# Named by trigger, not by tool, so it stays the home for every-change
-# checks as they arrive: the Rust gates in #2 and the dependency review
-# in #26 land here as additional jobs rather than as new workflow files.
-# Cadence-named siblings to come: weekly.yml (#24), release.yml (#3).
-# PR-title validation (#25) stays separate because it needs the `edited`
-# action type, which would re-run these jobs on every title tweak.
+# Named for when it fires, so a check on this cadence adds a job here
+# rather than a workflow file of its own.
 #
-# The push trigger is not redundant with the pull_request one: a run on
-# main is what populates the hook-environment cache, since a branch can
-# only restore caches from itself or the default branch.
+# The push trigger populates the hook-environment cache: a branch
+# restores caches only from itself or the default branch.
 name: CI
 
 on:
@@ -34,9 +29,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
-      # pre-commit/action is unusable here: it calls actions/cache@v4 by
-      # tag internally, and the repo requires every action be pinned to a
-      # full SHA. These steps are what it does, with the cache pinned.
+      # These steps stand in for pre-commit/action, which calls
+      # actions/cache by tag and so trips this repo's full-SHA pinning
+      # requirement.
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
