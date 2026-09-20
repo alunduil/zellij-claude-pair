@@ -5,7 +5,11 @@
 # Cadence-named siblings to come: weekly.yml (#24), release.yml (#3).
 # PR-title validation (#25) stays separate because it needs the `edited`
 # action type, which would re-run these jobs on every title tweak.
-name: Pull Request
+#
+# The push trigger is not redundant with the pull_request one: a run on
+# main is what populates the hook-environment cache, since a branch can
+# only restore caches from itself or the default branch.
+name: CI
 
 on:
   push:
@@ -22,7 +26,7 @@ concurrency:
 
 jobs:
   hooks:
-    name: Run pre-commit hooks
+    name: Check file hygiene
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
