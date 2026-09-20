@@ -1,0 +1,4 @@
+---
+# GitHub splices these files into an issue or PR body, where the text
+# opens at a section heading with no document title above it.
+MD041: false

@@ -1,0 +1,36 @@
+---
+# Named for when it fires, so a check on this cadence adds a job here
+# rather than a workflow file of its own.
+#
+# The push trigger populates the hook-environment cache: a branch
+# restores caches only from itself or the default branch.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  hooks:
+    name: Check file hygiene
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      # SHA pinning is transitive: an action whose own action.yml references
+      # another by tag fails the run at resolution, before any step executes.
+      # This fork pins its own, which pre-commit/action does not.
+      - name: Run hooks
+        uses: tox-dev/action-pre-commit-uv@e09b8958484dfe71f4ac3bc7afb230ba506402ec # v1.0.5

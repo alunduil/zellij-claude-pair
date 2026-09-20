@@ -1,0 +1,54 @@
+---
+# Install: pre-commit install --hook-type pre-commit --hook-type commit-msg
+#
+# Omitting the commit-msg hook type fails silently: the subject gate stops
+# running, and release-plz reads subjects to derive the version bump and
+# the changelog.
+
+# A hook belongs here once the repo holds files for it to check. Before
+# that its arguments cannot be exercised, so they would be guesses.
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ["--maxkb=1024"]
+      - id: check-case-conflict
+
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
+
+      - id: check-yaml
+
+      - id: check-shebang-scripts-are-executable
+
+  # yamllint's -d replaces config-file discovery, so passing a preset here
+  # would make .yamllint.yaml dead config.
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.38.0
+    hooks:
+      - id: yamllint
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.12
+    hooks:
+      - id: actionlint
+
+  # Pinned for per-directory config resolution, which .github/.markdownlint.yaml
+  # depends on to scope its rule to that directory.
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.23.2
+    hooks:
+      - id: markdownlint-cli2
+        args: ["--fix"]
+
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.4.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
