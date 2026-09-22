@@ -84,7 +84,7 @@ repos:
     hooks:
       - id: lychee
         name: lychee
-        entry: lychee --config=lychee.toml --no-progress --offline
+        entry: lychee --no-progress --offline
         language: system
         types: [markdown]
 
