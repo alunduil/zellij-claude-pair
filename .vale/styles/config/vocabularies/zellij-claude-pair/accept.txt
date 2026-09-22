@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+
 # Vale.Terms vocabulary, one regex per line.
 #
 # A bare literal enforces its casing everywhere: Zellij, not zellij.
