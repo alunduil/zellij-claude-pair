@@ -32,7 +32,13 @@ repos:
 
       - id: check-yaml
 
+      - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.11.0.1
+    hooks:
+      - id: shellcheck
 
   # yamllint's -d replaces config-file discovery, so passing a preset here
   # would make .yamllint.yaml dead config.
@@ -77,6 +83,19 @@ repos:
     rev: v6.2.0
     hooks:
       - id: reuse
+
+  # Runs the binary scripts/install-lychee.sh pins; the upstream hook's
+  # prebuilt binary fails on hosts with an older GLIBC.
+  #
+  # --offline limits the gate to internal links; weekly.yml checks external
+  # ones.
+  - repo: local
+    hooks:
+      - id: lychee
+        name: lychee
+        entry: lychee --no-progress --offline
+        language: system
+        types: [markdown]
 
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v4.4.0
