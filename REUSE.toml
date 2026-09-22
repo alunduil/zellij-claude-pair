@@ -7,8 +7,8 @@ precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Alex Brandt"
 SPDX-License-Identifier = "MIT"
 
-# The root license stays in its conventional form; REUSE reads the
-# SPDX-canonical text from LICENSES/MIT.txt.
+# The root LICENSE holds the conventional text; REUSE reads the
+# SPDX-canonical copy in LICENSES/MIT.txt.
 [[annotations]]
 path = "LICENSE"
 precedence = "aggregate"

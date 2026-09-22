@@ -50,9 +50,8 @@ repos:
       - id: markdownlint-cli2
         args: ["--fix"]
 
-  # Lints the whole tree, not the staged files, so a file without SPDX
-  # information fails every commit until it gains a header or a REUSE.toml
-  # annotation.
+  # Lints the whole tree, so one file without SPDX information fails every
+  # commit until it gains a header or a REUSE.toml annotation.
   - repo: https://github.com/fsfe/reuse-tool
     rev: v6.2.0
     hooks:
