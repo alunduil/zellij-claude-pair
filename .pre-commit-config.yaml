@@ -8,7 +8,8 @@
 # A hook belongs here once the repo holds files for it to check. Before
 # that its arguments cannot be exercised, so they would be guesses.
 
-# Vale's style packages are vendored upstream content, not ours to lint.
+# Vale's vendored style packages are upstream content, so findings in them
+# are not ours to fix.
 exclude: ^\.vale/styles/
 
 repos:
