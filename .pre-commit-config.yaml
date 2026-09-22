@@ -45,9 +45,8 @@ repos:
     rev: v0.9.3
     hooks:
       - id: taplo-format
-      # The hook's default --default-schema-catalogs fails to parse the
-      # SchemaStore catalog (tamasfe/taplo#799), so lint checks syntax only.
-      # Cargo and rustup validate their own files' schemas on every build.
+      # Syntax only: taplo cannot parse the SchemaStore catalog that the
+      # default --default-schema-catalogs fetches (tamasfe/taplo#799).
       - id: taplo-lint
         args: []
 

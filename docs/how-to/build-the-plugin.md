@@ -9,9 +9,7 @@ You need `rustup` and Zellij.
    cargo build --release
    ```
 
-   `rust-toolchain.toml` pins the compiler and the `wasm32-wasip1` target,
-   and `rustup` installs both on the first build. The plugin lands at
-   `target/wasm32-wasip1/release/zellij_claude_pair.wasm`.
+   The first build downloads the pinned Rust compiler.
 
 2. From inside a Zellij session, open the plugin in a floating pane:
 
@@ -20,5 +18,4 @@ You need `rustup` and Zellij.
      "file:$PWD/target/wasm32-wasip1/release/zellij_claude_pair.wasm"
    ```
 
-   `--skip-plugin-cache` makes Zellij load the fresh build instead of a
-   cached copy from an earlier one.
+   `--skip-plugin-cache` loads this build, not a cached earlier one.

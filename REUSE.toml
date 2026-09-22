@@ -15,8 +15,7 @@ precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Alex Brandt"
 SPDX-License-Identifier = "MIT"
 
-# Lock file managed by Cargo. Annotating in-band would be churned by every
-# dependency update.
+# Cargo rewrites its lock file, dropping any in-band header.
 [[annotations]]
 path = "Cargo.lock"
 precedence = "aggregate"

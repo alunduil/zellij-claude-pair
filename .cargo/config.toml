@@ -2,6 +2,6 @@
 #
 # SPDX-License-Identifier: MIT
 
-# Zellij loads plugins built for this target, which it also uses for its own.
+# Zellij loads plugins built for this target.
 [build]
 target = "wasm32-wasip1"
