@@ -32,7 +32,13 @@ repos:
 
       - id: check-yaml
 
+      - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.11.0.1
+    hooks:
+      - id: shellcheck
 
   # yamllint's -d replaces config-file discovery, so passing a preset here
   # would make .yamllint.yaml dead config.
@@ -68,6 +74,19 @@ repos:
     rev: v6.2.0
     hooks:
       - id: reuse
+
+  # The upstream hook's prebuilt binary links against a newer GLIBC than
+  # Debian 12 ships, so this runs the binary scripts/install-lychee.sh pins.
+  #
+  # --offline limits the gate to internal links. External URLs rot
+  # independently of the diff, so weekly.yml checks them without blocking.
+  - repo: local
+    hooks:
+      - id: lychee
+        name: lychee
+        entry: lychee --config=lychee.toml --no-progress --offline
+        language: system
+        types: [markdown]
 
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v4.4.0

@@ -1,0 +1,27 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+
+# 403: some sites block crawlers. 429: rate limiting is not breakage.
+accept = [200, 204, 206, 300, 301, 302, 303, 307, 308, 403, 429]
+
+cache = true
+# A transient failure cached once re-fails every run until the entry expires.
+cache_exclude_status = "429, 500.."
+# The default 1s wait is too short to ride out a burst of GitHub 502s.
+retry_wait_time = 10
+
+# Vendored Vale packages are upstream content, so their links are not ours
+# to fix.
+exclude_path = [".vale/styles"]
+
+exclude = [
+  "https?://localhost.*",
+  "https?://127\\.0\\.0\\.1.*",
+  "https?://example\\.com.*",
+  # Authenticated pages answer anonymous requests with 404.
+  "https://github\\.com/.*/settings/.*",
+  "https://github\\.com/settings/.*",
+  # Release URLs resolve only once the first release publishes.
+  "https://github\\.com/alunduil/zellij-claude-pair/releases.*",
+]
