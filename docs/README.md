@@ -8,9 +8,7 @@ exists once it holds a document.
 - `docs/how-to/`: steps to reach a goal the reader already has.
 - `docs/reference/`: facts to look up mid-task, such as configuration keys.
 - `docs/explanation/`: background and reasoning behind the design.
-- [`docs/adr/`](adr/): Architecture Decision Records.
 
-A document that needs two modes becomes two documents.
-
+Architecture Decision Records live in [`docs/adr/`](adr/).
 [ADR 0000](adr/0000-record-architecture-decisions.md) sets out when a decision
 earns an ADR and the format it takes.

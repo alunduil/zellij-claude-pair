@@ -37,8 +37,8 @@ message.
 - Future decisions have one location and one shape.
 - Revisiting a decision starts from recorded context.
 - Each decision costs one short Markdown file.
-- Too many ADRs bury the ones that matter, so the warranted-or-not test is
-  strict. When unsure, skip the ADR.
+- Too many ADRs bury the ones that matter, so apply the
+  significant-and-hard-to-reverse test strictly. When unsure, skip the ADR.
 
 [nygard]:
   https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions
