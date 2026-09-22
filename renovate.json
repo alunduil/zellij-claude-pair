@@ -16,7 +16,7 @@
   "customManagers": [
     {
       "customType": "regex",
-      "description": "Read `# renovate:` annotations above shell `*_VERSION=` pins so a new pin needs an annotation rather than a manager of its own",
+      "description": "A new `*_VERSION=` pin needs only a `# renovate:` annotation",
       "managerFilePatterns": ["scripts/*"],
       "matchStrings": [
         "# renovate: datasource=(?<datasource>[a-zA-Z0-9-._]+?) depName=(?<depName>[^\\s]+?)(?: packageName=(?<packageName>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?\\s+[A-Za-z0-9_]+?_VERSION=\"(?<currentValue>.+?)\""
@@ -25,7 +25,7 @@
   ],
   "packageRules": [
     {
-      "description": "Exempt update types that cannot carry a release timestamp from the bake period; without this they stall forever on a pending stability check and no PR is ever opened",
+      "description": "These update types carry no release timestamp, so the bake period would hold them on a pending stability check and never open a PR",
       "matchUpdateTypes": [
         "pin",
         "pinDigest",
@@ -43,7 +43,7 @@
       "matchManagers": ["github-actions"]
     },
     {
-      "description": "The weekly link check runs the action's bundled lychee against the lychee.toml the pinned binary reads, so both move together; listed after the GitHub Actions group to take precedence",
+      "description": "lychee-action bundles its own lychee and shares lychee.toml with the pinned binary, so both versions move together. Follows the GitHub Actions group because the later rule wins",
       "groupName": "lychee",
       "matchPackageNames": ["lycheeverse/lychee", "lycheeverse/lychee-action"]
     }

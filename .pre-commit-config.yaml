@@ -98,10 +98,11 @@ repos:
         language: system
         types: [markdown]
 
-  # --strict also fails on configs that only need migration; --no-global
-  # validates renovate.json as repo config rather than self-hosted global
-  # config. Remote presets are not resolved, so a missing `extends` target
-  # still surfaces only as a Repository Problem on the next Renovate run.
+  # --strict also fails on deprecated fields. Without --no-global, the
+  # validator reports repo-only fields as invalid global config.
+  #
+  # Remote presets go unchecked: a missing `extends` target surfaces only on
+  # the next Renovate run.
   - repo: https://github.com/renovatebot/pre-commit-hooks
     rev: 44.107.0
     hooks:
