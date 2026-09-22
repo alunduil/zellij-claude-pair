@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
 ---
 # GitHub splices these files into an issue or PR body, where the text
 # opens at a section heading with no document title above it.

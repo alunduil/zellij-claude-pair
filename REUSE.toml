@@ -1,0 +1,16 @@
+version = 1
+
+# Inline HTML comment headers render visibly in some markdown viewers.
+[[annotations]]
+path = "**/*.md"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Alex Brandt"
+SPDX-License-Identifier = "MIT"
+
+# The root LICENSE holds the conventional text; REUSE reads the
+# SPDX-canonical copy in LICENSES/MIT.txt.
+[[annotations]]
+path = "LICENSE"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Alex Brandt"
+SPDX-License-Identifier = "MIT"
