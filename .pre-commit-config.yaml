@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
 ---
 # Install: pre-commit install --hook-type pre-commit --hook-type commit-msg
 #
@@ -46,6 +49,14 @@ repos:
     hooks:
       - id: markdownlint-cli2
         args: ["--fix"]
+
+  # Lints the whole tree, not the staged files, so a file without SPDX
+  # information fails every commit until it gains a header or a REUSE.toml
+  # annotation.
+  - repo: https://github.com/fsfe/reuse-tool
+    rev: v6.2.0
+    hooks:
+      - id: reuse
 
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v4.4.0

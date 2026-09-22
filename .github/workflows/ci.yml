@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
 ---
 # Named for when it fires, so a check on this cadence adds a job here
 # rather than a workflow file of its own.
