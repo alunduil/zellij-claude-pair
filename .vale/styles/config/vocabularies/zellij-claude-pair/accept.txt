@@ -1,0 +1,41 @@
+# Vale.Terms list. One regex per line.
+#
+# A bare literal makes Vale.Terms enforce that capitalization everywhere the
+# word appears. Names whose canonical form carries a capital — Zellij,
+# Claude — are literals.
+#
+# An all-lowercase term meets one casing variation in real prose: its own
+# sentence-initial capital, which is correct English. Those take (?i),
+# inflections folded into one pattern: (?i)repos?.
+#
+# One entry per term. Carrying both alunduil and Alunduil makes Vale pick one
+# canonical form and error on every use of the other.
+#
+# What belongs here:
+#   - Proper nouns: product names, people, places, organizations.
+#   - Established acronyms with no surrounding-text rewrite available.
+#   - Other terms that appear unbackticked in prose. Backticked tokens skip
+#     Vale.Terms, so a package ID or code symbol takes backticks instead.
+#
+# A rule that fired on standard English wants the prose rewritten to comply.
+
+# Identity
+(?i)alunduil
+
+# Project ecosystem
+Zellij
+Claude
+Anthropic
+(?i)pre-commit
+(?i)markdownlint
+Renovate
+
+# Doc conventions
+README
+CHANGELOG
+(?i)frontmatter
+(?i)worktrees?
+
+# Common tech terms
+(?i)configs?
+(?i)repos?

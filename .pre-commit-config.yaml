@@ -8,6 +8,9 @@
 # A hook belongs here once the repo holds files for it to check. Before
 # that its arguments cannot be exercised, so they would be guesses.
 
+# Vale's style packages are vendored upstream content, not ours to lint.
+exclude: ^\.vale/styles/
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
@@ -46,6 +49,14 @@ repos:
     hooks:
       - id: markdownlint-cli2
         args: ["--fix"]
+
+  # Vale fails only on error-severity findings, so printing warnings here
+  # would be noise the hook never acts on.
+  - repo: https://github.com/errata-ai/vale
+    rev: v3.22.0
+    hooks:
+      - id: vale
+        args: [--minAlertLevel=error]
 
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v4.4.0
