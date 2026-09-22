@@ -30,6 +30,7 @@ repos:
       - id: mixed-line-ending
         args: ["--fix=lf"]
 
+      - id: check-json
       - id: check-yaml
 
       - id: check-executables-have-shebangs
@@ -96,6 +97,16 @@ repos:
         entry: lychee --no-progress --offline
         language: system
         types: [markdown]
+
+  # --strict also fails on configs that only need migration; --no-global
+  # validates renovate.json as repo config rather than self-hosted global
+  # config. Remote presets are not resolved, so a missing `extends` target
+  # still surfaces only as a Repository Problem on the next Renovate run.
+  - repo: https://github.com/renovatebot/pre-commit-hooks
+    rev: 44.107.0
+    hooks:
+      - id: renovate-config-validator
+        args: [--strict, --no-global]
 
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v4.4.0

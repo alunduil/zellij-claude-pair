@@ -22,6 +22,13 @@ precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Alex Brandt"
 SPDX-License-Identifier = "MIT"
 
+# JSON has no comment syntax to carry a header.
+[[annotations]]
+path = "renovate.json"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Alex Brandt"
+SPDX-License-Identifier = "MIT"
+
 # Vendored Vale packages, one stanza each with its upstream holder and
 # licence, so a package under a new licence surfaces in review. Listed after
 # **/*.md because the last matching annotation wins for the packages' READMEs.

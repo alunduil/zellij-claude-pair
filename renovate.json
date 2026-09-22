@@ -1,0 +1,51 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:best-practices",
+    "security:openssf-scorecard",
+    "customManagers:githubActionsVersions"
+  ],
+  "timezone": "Europe/London",
+  "reviewers": ["alunduil"],
+  "labels": ["dependencies"],
+  "pre-commit": {
+    "enabled": true
+  },
+  "minimumReleaseAge": "3 days",
+  "osvVulnerabilityAlerts": true,
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Read `# renovate:` annotations above shell `*_VERSION=` pins so a new pin needs an annotation rather than a manager of its own",
+      "managerFilePatterns": ["scripts/*"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-zA-Z0-9-._]+?) depName=(?<depName>[^\\s]+?)(?: packageName=(?<packageName>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?\\s+[A-Za-z0-9_]+?_VERSION=\"(?<currentValue>.+?)\""
+      ]
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Exempt update types that cannot carry a release timestamp from the bake period; without this they stall forever on a pending stability check and no PR is ever opened",
+      "matchUpdateTypes": [
+        "pin",
+        "pinDigest",
+        "digest",
+        "lockFileMaintenance",
+        "lockfileUpdate",
+        "rollback",
+        "bump",
+        "replacement"
+      ],
+      "minimumReleaseAge": null
+    },
+    {
+      "groupName": "GitHub Actions",
+      "matchManagers": ["github-actions"]
+    },
+    {
+      "description": "The weekly link check runs the action's bundled lychee against the lychee.toml the pinned binary reads, so both move together; listed after the GitHub Actions group to take precedence",
+      "groupName": "lychee",
+      "matchPackageNames": ["lycheeverse/lychee", "lycheeverse/lychee-action"]
+    }
+  ]
+}
