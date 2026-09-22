@@ -14,13 +14,12 @@ comments. Future contributors inherit the _what_ and must reconstruct the _why_
 from scratch.
 
 Scattered records also resist discovery. A reader can't tell whether to search
-commit messages, PR descriptions, or issues. A single location and template
-solves both problems.
+commit messages, PR descriptions, or issues.
 
 ## Decision
 
 Record significant decisions as Architecture Decision Records (ADRs) in the
-lightweight format from Michael Nygard's [Documenting Architecture
+format from Michael Nygard's [Documenting Architecture
 Decisions][nygard]. ADRs live under `docs/adr/` as `NNNN-kebab-title.md`,
 numbered from 0000, this record.
 
@@ -37,8 +36,8 @@ message.
 - Future decisions have one location and one shape.
 - Revisiting a decision starts from recorded context.
 - Each decision costs one short Markdown file.
-- Too many ADRs bury the ones that matter, so apply the
-  significant-and-hard-to-reverse test strictly. When unsure, skip the ADR.
+- Too many ADRs bury the ones that matter. When unsure whether a decision
+  earns one, skip it.
 
 [nygard]:
   https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions
