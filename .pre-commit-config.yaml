@@ -11,6 +11,10 @@
 # A hook belongs here once the repo holds files for it to check. Before
 # that its arguments cannot be exercised, so they would be guesses.
 
+# Vale's vendored style packages are upstream content, so findings in them
+# are not ours to fix.
+exclude: ^\.vale/styles/
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
@@ -49,6 +53,14 @@ repos:
     hooks:
       - id: markdownlint-cli2
         args: ["--fix"]
+
+  # Vale fails only on error-severity findings, so printing warnings here
+  # would be noise the hook never acts on.
+  - repo: https://github.com/errata-ai/vale
+    rev: v3.22.0
+    hooks:
+      - id: vale
+        args: [--minAlertLevel=error]
 
   # Lints the whole tree, so one file without SPDX information fails every
   # commit until it gains a header or a REUSE.toml annotation.

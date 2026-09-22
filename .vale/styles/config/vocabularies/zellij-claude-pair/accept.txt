@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+
+# Vale.Terms vocabulary, one regex per line.
+#
+# A bare literal enforces its casing everywhere: Zellij, not zellij.
+#
+# An all-lowercase term takes (?i) so its sentence-initial capital passes.
+# Fold inflections into the same pattern: (?i)repos?.
+#
+# One entry per term. Two casings of one term make Vale pick one and error
+# on the other.
+#
+# What belongs here:
+#   - Proper nouns: product names, people, places, organizations.
+#   - Established acronyms with no surrounding-text rewrite available.
+#   - Other terms that appear unbackticked in prose. Backticked tokens skip
+#     Vale.Terms, so a package ID or code symbol takes backticks instead.
+
+Zellij
+Claude
+Anthropic
+Renovate
+README
+CHANGELOG

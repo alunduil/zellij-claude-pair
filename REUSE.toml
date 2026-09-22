@@ -14,3 +14,37 @@ path = "LICENSE"
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Alex Brandt"
 SPDX-License-Identifier = "MIT"
+
+# Vendored Vale packages, one stanza each with its upstream holder and
+# licence, so a package under a new licence surfaces in review. Listed after
+# **/*.md because the last matching annotation wins for the packages' READMEs.
+
+[[annotations]]
+path = ".vale/styles/Microsoft/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2018-2019 Joseph Kato"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ".vale/styles/proselint/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2019 errata.ai"
+SPDX-License-Identifier = "BSD-3-Clause"
+
+[[annotations]]
+path = ".vale/styles/write-good/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2019 errata.ai"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ".vale/styles/alex/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2020 errata.ai"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ".vale/styles/Readability/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2021 errata.ai"
+SPDX-License-Identifier = "MIT"
