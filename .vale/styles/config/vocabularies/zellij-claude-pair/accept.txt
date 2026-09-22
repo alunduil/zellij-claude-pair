@@ -19,23 +19,12 @@
 #
 # A rule that fired on standard English wants the prose rewritten to comply.
 
-# Identity
-(?i)alunduil
-
 # Project ecosystem
 Zellij
 Claude
 Anthropic
-(?i)pre-commit
-(?i)markdownlint
 Renovate
 
 # Doc conventions
 README
 CHANGELOG
-(?i)frontmatter
-(?i)worktrees?
-
-# Common tech terms
-(?i)configs?
-(?i)repos?
