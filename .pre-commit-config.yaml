@@ -30,6 +30,7 @@ repos:
       - id: mixed-line-ending
         args: ["--fix=lf"]
 
+      - id: check-json
       - id: check-yaml
 
       - id: check-executables-have-shebangs
@@ -96,6 +97,17 @@ repos:
         entry: lychee --no-progress --offline
         language: system
         types: [markdown]
+
+  # --strict also fails on deprecated fields. Without --no-global, the
+  # validator reports repo-only fields as invalid global config.
+  #
+  # Remote presets go unchecked: a missing `extends` target surfaces only on
+  # the next Renovate run.
+  - repo: https://github.com/renovatebot/pre-commit-hooks
+    rev: 44.107.0
+    hooks:
+      - id: renovate-config-validator
+        args: [--strict, --no-global]
 
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: v4.4.0

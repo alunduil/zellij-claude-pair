@@ -1,0 +1,51 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:best-practices",
+    "security:openssf-scorecard",
+    "customManagers:githubActionsVersions"
+  ],
+  "timezone": "Europe/London",
+  "reviewers": ["alunduil"],
+  "labels": ["dependencies"],
+  "pre-commit": {
+    "enabled": true
+  },
+  "minimumReleaseAge": "3 days",
+  "osvVulnerabilityAlerts": true,
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "A new `*_VERSION=` pin needs only a `# renovate:` annotation",
+      "managerFilePatterns": ["scripts/*"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-zA-Z0-9-._]+?) depName=(?<depName>[^\\s]+?)(?: packageName=(?<packageName>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?\\s+[A-Za-z0-9_]+?_VERSION=\"(?<currentValue>.+?)\""
+      ]
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "These update types carry no release timestamp, so the bake period would hold them on a pending stability check and never open a PR",
+      "matchUpdateTypes": [
+        "pin",
+        "pinDigest",
+        "digest",
+        "lockFileMaintenance",
+        "lockfileUpdate",
+        "rollback",
+        "bump",
+        "replacement"
+      ],
+      "minimumReleaseAge": null
+    },
+    {
+      "groupName": "GitHub Actions",
+      "matchManagers": ["github-actions"]
+    },
+    {
+      "description": "lychee-action bundles its own lychee and shares lychee.toml with the pinned binary, so both versions move together. Follows the GitHub Actions group because the later rule wins",
+      "groupName": "lychee",
+      "matchPackageNames": ["lycheeverse/lychee", "lycheeverse/lychee-action"]
+    }
+  ]
+}
