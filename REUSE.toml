@@ -15,6 +15,13 @@ precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Alex Brandt"
 SPDX-License-Identifier = "MIT"
 
+# Cargo rewrites its lock file, dropping any in-band header.
+[[annotations]]
+path = "Cargo.lock"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Alex Brandt"
+SPDX-License-Identifier = "MIT"
+
 # Vendored Vale packages, one stanza each with its upstream holder and
 # licence, so a package under a new licence surfaces in review. Listed after
 # **/*.md because the last matching annotation wins for the packages' READMEs.

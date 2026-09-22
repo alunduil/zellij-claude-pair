@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+
+[package]
+name = "zellij-claude-pair"
+version = "0.0.1"
+edition = "2024"
+license = "MIT"
+repository = "https://github.com/alunduil/zellij-claude-pair"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+zellij-tile = "0.45.1"
+
+[lints.clippy]
+all = { level = "deny", priority = -1 }
+pedantic = { level = "warn", priority = -1 }

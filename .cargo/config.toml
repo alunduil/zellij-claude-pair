@@ -1,0 +1,7 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+
+# Zellij loads plugins built for this target.
+[build]
+target = "wasm32-wasip1"
