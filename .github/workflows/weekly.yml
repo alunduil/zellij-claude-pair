@@ -20,8 +20,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # External URLs rot independently of our diffs, so breakage opens or
-  # updates one report issue instead of failing the run.
+  # External URLs rot independently of our diffs, so breakage is reported
+  # rather than blocking.
   external-links:
     name: Check external links
     runs-on: ubuntu-latest
@@ -34,15 +34,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      # `key` and `restore-keys` must share a prefix or every run misses the
-      # cache silently. `hashFiles` needs the checkout, which rules out a
-      # job-level `env`.
+      # `key` and `restore-keys` must share a prefix, or every restore misses
+      # silently. `hashFiles` needs the checkout, so a job-level `env` can't
+      # hold it.
       - name: Derive the lychee cache prefix
         id: lychee-cache
         run: echo "prefix=lychee-${{ hashFiles('lychee.toml') }}" >>"${GITHUB_OUTPUT}"
 
-      # lychee expires entries after a day, so the restore pays off on a
-      # same-day re-dispatch, sparing rate-limited hosts a second sweep.
+      # lychee expires entries after a day, so only a same-day re-dispatch
+      # reuses them, sparing rate-limited hosts a second sweep.
       - name: Cache lychee results
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
@@ -51,10 +51,9 @@ jobs:
           restore-keys: |
             ${{ steps.lychee-cache.outputs.prefix }}-
 
-      # The action bundles its own lychee, which reads the same lychee.toml
-      # as the pre-commit hook. Keep its version in step with
-      # scripts/install-lychee.sh, or a config key one of them does not
-      # know fails the other.
+      # The action bundles its own lychee but shares lychee.toml with the
+      # pre-commit hook. Keep its version in step with
+      # scripts/install-lychee.sh, or one may reject a key the other accepts.
       - name: Check all links
         id: lychee
         uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0

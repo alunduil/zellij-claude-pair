@@ -75,11 +75,11 @@ repos:
     hooks:
       - id: reuse
 
-  # The upstream hook's prebuilt binary links against a newer GLIBC than
-  # Debian 12 ships, so this runs the binary scripts/install-lychee.sh pins.
+  # Runs the binary scripts/install-lychee.sh pins; the upstream hook's
+  # prebuilt binary fails on hosts with an older GLIBC.
   #
-  # --offline limits the gate to internal links. External URLs rot
-  # independently of the diff, so weekly.yml checks them without blocking.
+  # --offline limits the gate to internal links; weekly.yml checks external
+  # ones.
   - repo: local
     hooks:
       - id: lychee

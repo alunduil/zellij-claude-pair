@@ -8,11 +8,10 @@ accept = [200, 204, 206, 300, 301, 302, 303, 307, 308, 403, 429]
 cache = true
 # A transient failure cached once re-fails every run until the entry expires.
 cache_exclude_status = "429, 500.."
-# The default 1s wait is too short to ride out a burst of GitHub 502s.
+# Long enough for retries to outlast a burst of upstream 5xx responses.
 retry_wait_time = 10
 
-# Vendored Vale packages are upstream content, so their links are not ours
-# to fix.
+# Vendored upstream content, so its links are not ours to fix.
 exclude_path = [".vale/styles"]
 
 exclude = [
