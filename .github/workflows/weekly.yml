@@ -1,0 +1,82 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+---
+name: Weekly
+
+on:
+  schedule:
+    - cron: "0 18 * * 5"
+      timezone: Europe/London
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Ref-less so a manual dispatch and the schedule cannot race on the shared
+# report issue.
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  # External URLs rot independently of our diffs, so breakage is reported
+  # rather than blocking.
+  external-links:
+    name: Check external links
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      # `key` and `restore-keys` must share a prefix, or every restore misses
+      # silently. `hashFiles` needs the checkout, so a job-level `env` can't
+      # hold it.
+      - name: Derive the lychee cache prefix
+        id: lychee-cache
+        run: echo "prefix=lychee-${{ hashFiles('lychee.toml') }}" >>"${GITHUB_OUTPUT}"
+
+      # lychee expires entries after a day, so only a same-day re-dispatch
+      # reuses them, sparing rate-limited hosts a second sweep.
+      - name: Cache lychee results
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: .lycheecache
+          key: ${{ steps.lychee-cache.outputs.prefix }}-${{ github.run_id }}
+          restore-keys: |
+            ${{ steps.lychee-cache.outputs.prefix }}-
+
+      # The action bundles its own lychee but shares lychee.toml with the
+      # pre-commit hook. Keep its version in step with
+      # scripts/install-lychee.sh, or one may reject a key the other accepts.
+      - name: Check all links
+        id: lychee
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: --no-progress "**/*.md"
+          fail: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Find existing report issue
+        if: steps.lychee.outputs.exit_code != 0
+        id: report
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          number=$(gh issue list --repo "${{ github.repository }}" --state open \
+            --search 'Link Checker Report in:title' --json number --jq '.[0].number // empty')
+          echo "number=${number}" >> "${GITHUB_OUTPUT}"
+
+      - name: Open or update report issue
+        if: steps.lychee.outputs.exit_code != 0
+        uses: peter-evans/create-issue-from-file@fca9117c27cdc29c6c4db3b86c48e4115a786710 # v6.0.0
+        with:
+          title: Link Checker Report
+          content-filepath: ./lychee/out.md
+          issue-number: ${{ steps.report.outputs.number }}
+          labels: documentation
