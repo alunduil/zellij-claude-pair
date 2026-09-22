@@ -34,15 +34,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
+      # `key` and `restore-keys` must share a prefix or every run misses the
+      # cache silently. `hashFiles` needs the checkout, which rules out a
+      # job-level `env`.
+      - name: Derive the lychee cache prefix
+        id: lychee-cache
+        run: echo "prefix=lychee-${{ hashFiles('lychee.toml') }}" >>"${GITHUB_OUTPUT}"
+
       # lychee expires entries after a day, so the restore pays off on a
       # same-day re-dispatch, sparing rate-limited hosts a second sweep.
       - name: Cache lychee results
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: .lycheecache
-          key: lychee-${{ hashFiles('lychee.toml') }}-${{ github.run_id }}
+          key: ${{ steps.lychee-cache.outputs.prefix }}-${{ github.run_id }}
           restore-keys: |
-            lychee-${{ hashFiles('lychee.toml') }}-
+            ${{ steps.lychee-cache.outputs.prefix }}-
 
       # The action bundles its own lychee, which reads the same lychee.toml
       # as the pre-commit hook. Keep its version in step with
