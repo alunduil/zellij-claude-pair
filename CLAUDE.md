@@ -21,11 +21,10 @@ after any build, or on docs.rs.
   `target/wasm32-wasip1/release/zellij_claude_pair.wasm`.
   [docs/how-to/build-the-plugin.md](docs/how-to/build-the-plugin.md) loads it
   into Zellij.
-- `cargo clippy --all-targets`: `Cargo.toml` denies `clippy::all` and warns on
-  `clippy::pedantic`.
+- `cargo clippy --all-targets`: lint levels live in `Cargo.toml`.
 - `cargo fmt --check`
-- `cargo test --target "$(rustc -vV | sed -n 's/^host: //p')"`: tests run on
-  the host triple. `.cargo/config.toml` defaults every build to
+- `cargo test --target host-tuple`: tests run on the host. `.cargo/config.toml`
+  defaults every build to
   `wasm32-wasip1`, which nothing here can execute, so a bare `cargo test`
   fails with `Exec format error`.
 - `pre-commit run --all-files`: the CI gate. Install with
