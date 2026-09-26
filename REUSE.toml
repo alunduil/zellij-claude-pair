@@ -5,9 +5,9 @@ version = 1
 # - LICENSE: holds the conventional text; REUSE reads the SPDX-canonical
 #   copy in LICENSES/MIT.txt.
 # - Cargo.lock: Cargo rewrites it, dropping any header.
-# - renovate.json: JSON has no comment syntax.
+# - JSON: no comment syntax.
 [[annotations]]
-path = ["**/*.md", "LICENSE", "Cargo.lock", "renovate.json"]
+path = ["**/*.md", "LICENSE", "Cargo.lock", "**/*.json"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Alex Brandt"
 SPDX-License-Identifier = "MIT"
