@@ -98,6 +98,24 @@ repos:
         language: system
         types: [markdown]
 
+  # Cargo checks the whole crate, so file names are not passed. -D warnings
+  # makes the pedantic lints block, which Cargo.toml leaves at warn so a
+  # local build still iterates.
+  - repo: local
+    hooks:
+      - id: cargo-fmt
+        name: cargo fmt
+        entry: cargo fmt --all
+        language: system
+        types: [rust]
+        pass_filenames: false
+      - id: cargo-clippy
+        name: cargo clippy
+        entry: cargo clippy --all-targets --locked -- -D warnings
+        language: system
+        files: (\.rs|^Cargo\.(toml|lock))$
+        pass_filenames: false
+
   # --strict also fails on deprecated fields. Without --no-global, the
   # validator reports repo-only fields as invalid global config.
   #

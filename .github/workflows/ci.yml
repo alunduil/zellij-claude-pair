@@ -26,7 +26,7 @@ jobs:
   hooks:
     name: Check file hygiene
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
@@ -35,8 +35,51 @@ jobs:
       - name: Install lychee
         run: ./scripts/install-lychee.sh
 
+      # The clippy hook compiles every dependency.
+      - name: Cache Rust build
+        uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+
       # SHA pinning is transitive: an action whose own action.yml references
       # another by tag fails the run at resolution, before any step executes.
       # This fork pins its own, which pre-commit/action does not.
       - name: Run hooks
         uses: tox-dev/action-pre-commit-uv@e09b8958484dfe71f4ac3bc7afb230ba506402ec # v1.0.5
+
+  build:
+    name: Build the WASM plugin
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Cache Rust build
+        uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+
+      - name: Build
+        run: cargo build --release --locked
+
+      # Load it with docs/how-to/build-the-plugin.md to try a PR by hand.
+      - name: Upload plugin
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: zellij-claude-pair
+          path: target/wasm32-wasip1/release/zellij_claude_pair.wasm
+          if-no-files-found: error
+          retention-days: 7
+
+  deny:
+    name: Check dependency policy
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Install cargo-deny
+        run: ./scripts/install-cargo-deny.sh
+
+      - name: Check dependencies
+        run: cargo deny --locked check

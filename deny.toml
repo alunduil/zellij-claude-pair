@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+
+# Only the plugin target ships, so host-only dependencies stay out of scope.
+[graph]
+targets = ["wasm32-wasip1"]
+
+[advisories]
+unmaintained = "all"
+yanked = "deny"
+
+[licenses]
+allow = ["Apache-2.0", "ISC", "MIT", "MPL-2.0", "Unicode-3.0"]
+
+[bans]
+# zellij-tile pulls in duplicates (miette, syn, thiserror) we can't unify.
+multiple-versions = "allow"
+wildcards = "deny"
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
