@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   hooks:
-    name: Check file hygiene
+    name: Run every pre-commit hook
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
