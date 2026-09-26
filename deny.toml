@@ -14,7 +14,8 @@ yanked = "deny"
 allow = ["Apache-2.0", "ISC", "MIT", "MPL-2.0", "Unicode-3.0"]
 
 [bans]
-# zellij-tile pulls in duplicates (miette, syn, thiserror) we can't unify.
+# zellij-tile's dependency tree carries duplicate versions this crate can't
+# unify.
 multiple-versions = "allow"
 wildcards = "deny"
 

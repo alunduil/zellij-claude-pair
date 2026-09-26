@@ -98,9 +98,9 @@ repos:
         language: system
         types: [markdown]
 
-  # Cargo checks the whole crate, so file names are not passed. -D warnings
-  # makes the pedantic lints block, which Cargo.toml leaves at warn so a
-  # local build still iterates.
+  # Cargo checks the whole crate, so it takes no file names. Pedantic lints
+  # stay at warn in Cargo.toml so a local build runs; -D warnings blocks on
+  # them here.
   - repo: local
     hooks:
       - id: cargo-fmt
