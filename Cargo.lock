@@ -800,7 +800,7 @@ dependencies = [
  "icu_normalizer_data",
  "icu_properties",
  "icu_provider",
- "smallvec 1.16.1",
+ "smallvec",
  "zerovec",
 ]
 
@@ -859,7 +859,7 @@ dependencies = [
  "icu_provider",
  "icu_segmenter_data",
  "potential_utf",
- "smallvec 1.16.1",
+ "smallvec",
  "utf8_iter",
  "zerovec",
 ]
@@ -877,7 +877,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3b0875f23caa03898994f6ddc501886a45c7d3d62d04d2d90788d47be1b1e4de"
 dependencies = [
  "idna_adapter",
- "smallvec 1.16.1",
+ "smallvec",
  "utf8_iter",
 ]
 
@@ -1415,7 +1415,7 @@ dependencies = [
  "cfg-if",
  "libc",
  "redox_syscall",
- "smallvec 1.16.1",
+ "smallvec",
  "windows-link",
 ]
 
@@ -1779,12 +1779,6 @@ dependencies = [
  "futures-core",
  "futures-io",
 ]
-
-[[package]]
-name = "smallvec"
-version = "0.6.12"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "533e29e15d0748f28afbaf4ff7cab44d73e483a8e50b38c40bd13b7f3d48f542"
 
 [[package]]
 name = "smallvec"
@@ -2531,7 +2525,6 @@ dependencies = [
 name = "zellij-claude-pair"
 version = "0.0.1"
 dependencies = [
- "smallvec 0.6.12",
  "zellij-tile",
 ]
 
