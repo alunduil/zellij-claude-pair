@@ -97,10 +97,7 @@ jobs:
       # cargo deny enforces the same list.
       - name: Read license allow-list
         id: licenses
-        run: >-
-          python3 -c 'import tomllib;
-          print("allow=" + ", ".join(tomllib.load(open("deny.toml", "rb"))["licenses"]["allow"]))'
-          >> "$GITHUB_OUTPUT"
+        run: echo "allow=$(yq -oy '.licenses.allow | join(", ")' deny.toml)" >> "$GITHUB_OUTPUT"
 
       # This check also sees host-only crates and actions, which cargo deny
       # skips. Each one outside the list needs an entry here.
