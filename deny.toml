@@ -11,6 +11,7 @@ unmaintained = "all"
 yanked = "deny"
 
 [licenses]
+# Mirrored by the dependency-review job in .github/workflows/ci.yml.
 allow = ["Apache-2.0", "ISC", "MIT", "MPL-2.0", "Unicode-3.0"]
 
 [bans]

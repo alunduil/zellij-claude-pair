@@ -83,3 +83,25 @@ jobs:
 
       - name: Check dependencies
         run: cargo deny --locked check
+
+  dependency-review:
+    name: Review dependency changes
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      # The allow-list mirrors deny.toml. This check also sees host-only
+      # crates and actions, which cargo deny doesn't, so each of those
+      # outside the list is named as an exception.
+      - name: Review dependencies
+        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          allow-licenses: Apache-2.0, ISC, MIT, MPL-2.0, Unicode-3.0
+          allow-dependencies-licenses: >-
+            pkg:cargo/doctest-file,
+            pkg:cargo/encoding_rs,
+            pkg:cargo/mock_instant,
+            pkg:cargo/notify,
+            pkg:cargo/recvmsg,
+            pkg:githubactions/Swatinem/rust-cache
