@@ -1,0 +1,69 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+---
+name: Daily
+
+on:
+  schedule:
+    # Only a failed run sends email, so a daily run adds no noise.
+    - cron: "0 9 * * *"
+      timezone: Europe/London
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  # Hosted Renovate never retries a failed job and reports the failure nowhere.
+  # Renovate edits the Dependency Dashboard issue as updates change, so an
+  # untouched dashboard is the only sign that it has stopped.
+  renovate-liveness:
+    name: Check Renovate liveness
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: read
+
+    steps:
+      - name: Fail if the Dependency Dashboard is stale
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const STALE_DAYS = 10;
+            const MS_PER_DAY = 86_400_000;
+
+            const q = [
+              `repo:${context.repo.owner}/${context.repo.repo}`,
+              'is:issue',
+              'is:open',
+              'in:title "Dependency Dashboard"',
+              'author:app/renovate',
+            ].join(' ');
+
+            const { data } = await github.rest.search.issuesAndPullRequests({ q });
+            const dashboard = data.items[0];
+
+            if (!dashboard) {
+              core.setFailed(
+                'No open Dependency Dashboard: Renovate is uninstalled or ' +
+                'disabled on this repository. Reinstall the app or re-enable ' +
+                'the repository.',
+              );
+              return;
+            }
+
+            const ageDays = (Date.now() - new Date(dashboard.updated_at)) / MS_PER_DAY;
+            const summary =
+              `Dependency Dashboard #${dashboard.number} last updated ` +
+              `${ageDays.toFixed(1)} days ago`;
+
+            if (ageDays > STALE_DAYS) {
+              core.setFailed(
+                `${summary}: Renovate has likely stopped running. Read the ` +
+                'Mend job log, then tick the manual-run box on the dashboard.',
+              );
+              return;
+            }
+
+            core.info(`${summary}, within the ${STALE_DAYS}-day window.`);

@@ -12,6 +12,7 @@
     "enabled": true
   },
   "minimumReleaseAge": "3 days",
+  "minimumReleaseAgeBehaviour": "timestamp-optional",
   "osvVulnerabilityAlerts": true,
   "customManagers": [
     {
