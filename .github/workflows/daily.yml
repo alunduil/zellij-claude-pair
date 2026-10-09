@@ -6,8 +6,7 @@ name: Daily
 
 on:
   schedule:
-    # A passing run is silent and only a failure emails, so a daily cadence
-    # costs nothing while everything is healthy.
+    # Only a failed run sends email, so a daily run adds no noise.
     - cron: "0 9 * * *"
       timezone: Europe/London
   workflow_dispatch:
@@ -16,9 +15,9 @@ permissions:
   contents: read
 
 jobs:
-  # A failed Renovate job on Mend's hosted runner stalls silently and is never
-  # retried. The Dependency Dashboard issue is Renovate's heartbeat, so a stale
-  # one is the only available signal.
+  # Hosted Renovate never retries a failed job and reports the failure nowhere.
+  # Renovate edits the Dependency Dashboard issue as updates change, so an
+  # untouched dashboard is the only sign that it has stopped.
   renovate-liveness:
     name: Check Renovate liveness
     runs-on: ubuntu-latest
@@ -61,8 +60,8 @@ jobs:
 
             if (ageDays > STALE_DAYS) {
               core.setFailed(
-                `${summary}: Renovate runs are dying. Read the Mend job log, ` +
-                'then trigger a run by hand.',
+                `${summary}: Renovate has likely stopped running. Read the ` +
+                'Mend job log, then tick the manual-run box on the dashboard.',
               );
               return;
             }
