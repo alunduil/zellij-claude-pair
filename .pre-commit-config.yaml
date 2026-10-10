@@ -122,7 +122,7 @@ repos:
   # Remote presets go unchecked: a missing `extends` target surfaces only on
   # the next Renovate run.
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 44.142.1
+    rev: 44.143.0
     hooks:
       - id: renovate-config-validator
         args: [--strict, --no-global]
