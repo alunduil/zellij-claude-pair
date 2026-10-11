@@ -12,8 +12,10 @@
 # that its arguments cannot be exercised, so they would be guesses.
 
 # Vale's vendored style packages are upstream content, so findings in them
-# are not ours to fix.
-exclude: ^\.vale/styles/
+# are not ours to fix. release-plz rewrites CHANGELOG.md from commit
+# subjects on every release, so a hook fix there would be undone and a
+# finding there could only be fixed by rewriting history.
+exclude: ^(\.vale/styles/|CHANGELOG\.md$)
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
