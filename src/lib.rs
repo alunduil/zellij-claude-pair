@@ -9,12 +9,11 @@
 //! stalling the widgets, and let each instance request only the permissions
 //! its surface needs.
 
-use std::collections::BTreeMap;
+use std::{collections::BTreeMap, fmt};
 
 use zellij_tile::prelude::*;
 
 const SURFACE_KEY: &str = "surface";
-const SURFACE_NAMES: &str = "branch, pr, picker";
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum Surface {
@@ -23,19 +22,36 @@ enum Surface {
     Picker,
 }
 
-impl Surface {
-    fn from_configuration(configuration: &BTreeMap<String, String>) -> Result<Self, String> {
-        match configuration.get(SURFACE_KEY).map(String::as_str) {
-            Some("branch") => Ok(Self::Branch),
-            Some("pr") => Ok(Self::Pr),
-            Some("picker") => Ok(Self::Picker),
-            Some(other) => Err(format!(
-                "unknown {SURFACE_KEY} \"{other}\"; expected one of: {SURFACE_NAMES}"
-            )),
-            None => Err(format!(
-                "missing {SURFACE_KEY} configuration; expected one of: {SURFACE_NAMES}"
-            )),
+#[derive(Debug, PartialEq, Eq)]
+enum ConfigurationError {
+    MissingSurface,
+    UnknownSurface(String),
+}
+
+impl fmt::Display for ConfigurationError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::MissingSurface => write!(f, "missing {SURFACE_KEY} configuration")?,
+            Self::UnknownSurface(name) => write!(f, "unknown {SURFACE_KEY} \"{name}\"")?,
         }
+        let names: Vec<_> = Surface::ALL.iter().map(|surface| surface.name()).collect();
+        write!(f, "; expected one of: {}", names.join(", "))
+    }
+}
+
+impl Surface {
+    const ALL: [Self; 3] = [Self::Branch, Self::Pr, Self::Picker];
+
+    fn from_configuration(
+        configuration: &BTreeMap<String, String>,
+    ) -> Result<Self, ConfigurationError> {
+        let name = configuration
+            .get(SURFACE_KEY)
+            .ok_or(ConfigurationError::MissingSurface)?;
+        Self::ALL
+            .into_iter()
+            .find(|surface| surface.name() == name)
+            .ok_or_else(|| ConfigurationError::UnknownSurface(name.clone()))
     }
 
     /// Widgets read the mode and theme to style themselves. The picker also
@@ -65,7 +81,7 @@ enum State {
     #[default]
     Unloaded,
     Loaded(Surface),
-    Misconfigured(String),
+    Misconfigured(ConfigurationError),
 }
 
 register_plugin!(State);
@@ -77,7 +93,7 @@ impl ZellijPlugin for State {
                 request_permission(surface.permissions());
                 Self::Loaded(surface)
             }
-            Err(message) => Self::Misconfigured(message),
+            Err(error) => Self::Misconfigured(error),
         };
     }
 
@@ -85,7 +101,7 @@ impl ZellijPlugin for State {
         match self {
             Self::Unloaded => {}
             Self::Loaded(surface) => println!("{}", surface.name()),
-            Self::Misconfigured(message) => println!("{message}"),
+            Self::Misconfigured(error) => println!("{error}"),
         }
     }
 }
@@ -100,9 +116,13 @@ mod tests {
 
     #[test]
     fn selects_each_surface_by_name() {
-        for surface in [Surface::Branch, Surface::Pr, Surface::Picker] {
+        for (name, surface) in [
+            ("branch", Surface::Branch),
+            ("pr", Surface::Pr),
+            ("picker", Surface::Picker),
+        ] {
             assert_eq!(
-                Surface::from_configuration(&configuration(surface.name())),
+                Surface::from_configuration(&configuration(name)),
                 Ok(surface)
             );
         }
@@ -110,18 +130,22 @@ mod tests {
 
     #[test]
     fn rejects_an_unknown_surface() {
-        let error = Surface::from_configuration(&configuration("status")).unwrap_err();
-        assert!(error.contains("\"status\""), "{error}");
+        assert_eq!(
+            Surface::from_configuration(&configuration("status")),
+            Err(ConfigurationError::UnknownSurface("status".to_owned()))
+        );
     }
 
     #[test]
     fn rejects_a_missing_surface() {
-        let error = Surface::from_configuration(&BTreeMap::new()).unwrap_err();
-        assert!(error.contains("missing"), "{error}");
+        assert_eq!(
+            Surface::from_configuration(&BTreeMap::new()),
+            Err(ConfigurationError::MissingSurface)
+        );
     }
 
     #[test]
-    fn widgets_request_nothing_only_the_picker_uses() {
+    fn widgets_request_no_picker_only_permission() {
         let picker_only = [
             PermissionType::RunCommands,
             PermissionType::ChangeApplicationState,
