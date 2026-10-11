@@ -1,0 +1,18 @@
+// SPDX-FileCopyrightText: 2026 Alex Brandt
+//
+// SPDX-License-Identifier: MIT
+
+// Loads the branch widget and the picker as two instances of one build.
+// Start zellij from the repository root so the relative path resolves.
+layout {
+    pane size=1 borderless=true {
+        plugin location="file:target/wasm32-wasip1/release/zellij_claude_pair.wasm" {
+            surface "branch"
+        }
+    }
+    pane {
+        plugin location="file:target/wasm32-wasip1/release/zellij_claude_pair.wasm" {
+            surface "picker"
+        }
+    }
+}
