@@ -54,8 +54,8 @@ impl Surface {
             .ok_or_else(|| ConfigurationError::UnknownSurface(name.clone()))
     }
 
-    /// Widgets read the mode and theme to style themselves. The picker also
-    /// runs `git` and `gh` to enumerate repositories and opens the pair tab.
+    /// Widgets need the mode and theme to style themselves. The picker also
+    /// needs to run `git` and `gh` and to open the pair tab.
     fn permissions(self) -> &'static [PermissionType] {
         match self {
             Self::Branch | Self::Pr => &[PermissionType::ReadApplicationState],

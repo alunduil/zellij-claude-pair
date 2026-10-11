@@ -29,8 +29,7 @@ You need `rustup` and Zellij.
    `--skip-plugin-cache` loads this build, not a cached earlier one.
    `surface` picks what the instance shows: `branch`, `pr`, or `picker`.
 
-To load several surfaces at once, start Zellij from the repository root
-with the example layout:
+To load several surfaces in a new session, run from the repository root:
 
 ```sh
 zellij --layout examples/separate-instances.kdl
