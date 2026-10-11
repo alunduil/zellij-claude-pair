@@ -11,10 +11,8 @@ A Zellij plugin for pairing with Claude Code, one repository per tab.
 ## What it does
 
 The plugin is the Zellij side of a Claude pairing workflow: it owns everything
-you see and drive from inside a session.
-
-The plugin is pre-release and renders a placeholder pane. The first releases
-add:
+you see and drive from inside a session. It's pre-release and renders a
+placeholder pane; the first releases add:
 
 - Status widgets for the current branch and its pull request, styled from your
   Zellij theme.
@@ -29,15 +27,8 @@ progress on the
 ## Install
 
 No release exists yet, so the plugin runs from a clone. You need `rustup` and
-Zellij.
-
-```sh
-git clone https://github.com/alunduil/zellij-claude-pair.git
-cd zellij-claude-pair
-```
-
-[Build the plugin](docs/how-to/build-the-plugin.md) covers building it and
-loading it into a running session.
+Zellij. [Build the plugin](docs/how-to/build-the-plugin.md) covers cloning,
+building, and loading it into a running session.
 
 ## Get help
 

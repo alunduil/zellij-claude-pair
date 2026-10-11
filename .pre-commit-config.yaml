@@ -11,10 +11,11 @@
 # A hook belongs here once the repo holds files for it to check. Before
 # that its arguments cannot be exercised, so they would be guesses.
 
-# Vale's vendored style packages are upstream content, so findings in them
-# are not ours to fix. release-plz rewrites CHANGELOG.md from commit
-# subjects on every release, so a hook fix there would be undone and a
-# finding there could only be fixed by rewriting history.
+# - .vale/styles/: vendored upstream content, so findings in it are not
+#   ours to fix.
+# - CHANGELOG.md: release-plz rewrites it from commit subjects, so a hook
+#   fix would be undone and a finding could only be fixed by rewriting
+#   history.
 exclude: ^(\.vale/styles/|CHANGELOG\.md$)
 
 repos:

@@ -3,7 +3,14 @@
 Build the plugin from source and load it into a running Zellij session.
 You need `rustup` and Zellij.
 
-1. Build the plugin:
+1. Clone the repository:
+
+   ```sh
+   git clone https://github.com/alunduil/zellij-claude-pair.git
+   cd zellij-claude-pair
+   ```
+
+2. Build the plugin:
 
    ```sh
    cargo build --release
@@ -11,7 +18,7 @@ You need `rustup` and Zellij.
 
    The first build downloads the pinned Rust compiler.
 
-2. From inside a Zellij session, open the plugin in a floating pane:
+3. From inside a Zellij session, open the plugin in a floating pane:
 
    ```sh
    zellij plugin --floating --skip-plugin-cache -- \
