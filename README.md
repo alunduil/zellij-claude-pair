@@ -10,19 +10,21 @@ A Zellij plugin for pairing with Claude Code, one repository per tab.
 
 ## What it does
 
-The plugin is the Zellij side of a Claude pairing workflow. It owns everything
-you see and drive from inside a session:
+The plugin is the Zellij side of a Claude pairing workflow: it owns everything
+you see and drive from inside a session.
 
-- Status widgets show the current branch and the status of its pull request,
-  styled from your Zellij theme.
-- A picker lists your worktrees, local clones, and remote repositories. Picking
+The plugin is pre-release and renders a placeholder pane. The first releases
+add:
+
+- Status widgets for the current branch and its pull request, styled from your
+  Zellij theme.
+- A picker over your worktrees, local clones, and remote repositories. Picking
   one opens a pair tab for it.
 
-Later releases grow the plugin into a session orchestrator. It will start
-Claude Code in worktrees and track each task's pull request through to merge.
-
-The plugin is pre-release: today it renders a placeholder pane. Track progress
-on the [milestones page](https://github.com/alunduil/zellij-claude-pair/milestones).
+After 1.0, the plugin grows into a session orchestrator that starts Claude Code
+in worktrees and tracks each task's pull request through to merge. Track
+progress on the
+[milestones page](https://github.com/alunduil/zellij-claude-pair/milestones).
 
 ## Install
 
