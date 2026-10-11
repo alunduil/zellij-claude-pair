@@ -73,7 +73,7 @@ repos:
   # Vale fails only on error-severity findings, so printing warnings here
   # would be noise the hook never acts on.
   - repo: https://github.com/errata-ai/vale
-    rev: v3.22.0
+    rev: v3.24.0
     hooks:
       - id: vale
         args: [--minAlertLevel=error]
