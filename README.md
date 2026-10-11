@@ -26,9 +26,9 @@ progress on the
 
 ## Install
 
-No release exists yet, so the plugin runs from a clone. You need `rustup` and
-Zellij. [Build the plugin](docs/how-to/build-the-plugin.md) covers cloning,
-building, and loading it into a running session.
+No release exists yet, so the plugin runs from a clone.
+[Build the plugin](docs/how-to/build-the-plugin.md) lists the prerequisites and
+covers cloning, building, and loading it into a running session.
 
 ## Get help
 

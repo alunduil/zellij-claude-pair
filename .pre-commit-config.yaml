@@ -13,9 +13,8 @@
 
 # - .vale/styles/: vendored upstream content, so findings in it are not
 #   ours to fix.
-# - CHANGELOG.md: release-plz rewrites it from commit subjects, so a hook
-#   fix would be undone and a finding could only be fixed by rewriting
-#   history.
+# - CHANGELOG.md: release-plz generates it from commit subjects, which no
+#   hook can fix after the fact.
 exclude: ^(\.vale/styles/|CHANGELOG\.md$)
 
 repos:
