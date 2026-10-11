@@ -14,11 +14,15 @@ first so we can agree on the approach before you write code.
 
 ## Set up
 
-You need `rustup`, Zellij, and [pre-commit](https://pre-commit.com). The first
-build downloads the pinned compiler.
+You need `rustup`, Zellij, [pre-commit](https://pre-commit.com), and
+[lychee](https://lychee.cli.rs). The link-check hook needs `lychee` on your
+`PATH`. On x86-64 Linux, install the pinned version:
 
-Install both hook stages. The `commit-msg` stage is the only local check on
-commit subjects:
+```sh
+./scripts/install-lychee.sh
+```
+
+Then install the hooks:
 
 ```sh
 pre-commit install --hook-type pre-commit --hook-type commit-msg
@@ -29,8 +33,8 @@ pre-commit install --hook-type pre-commit --hook-type commit-msg
 To try a change by hand, follow
 [Build the plugin](docs/how-to/build-the-plugin.md).
 
-WASM test binaries can't run on your machine, so run the tests for your host
-instead:
+CI doesn't run the tests, so run them before you open a pull request. Target
+your host, since WASM test binaries can't execute locally:
 
 ```sh
 cargo test --target host-tuple
@@ -44,12 +48,12 @@ Run every hook before you open a pull request:
 pre-commit run --all-files
 ```
 
-CI runs the same gate. Some hooks fix files in place, so stage what they touch
-and run again.
-
-Every new file carries an SPDX header. A file that can't hold a comment gets an
-annotation in `REUSE.toml` instead. When Vale flags a correct term, add it to
+Some hooks fix files in place, so stage what they touch and run again. When Vale
+flags a correct term, add it to
 `.vale/styles/config/vocabularies/zellij-claude-pair/accept.txt`.
+
+CI also builds the plugin and checks dependencies, so a clean local run can still
+fail CI.
 
 ## Commit messages and pull requests
 
@@ -60,8 +64,9 @@ Pull requests merge by squash, so the title becomes the commit subject on
 the next version and write `CHANGELOG.md`. Don't bump versions or edit that file
 by hand.
 
-Open pull requests as drafts, fill in the template, and mark them ready once CI
-passes. The project has one maintainer, so reviews are best-effort.
+Fill in the pull request template. CI on your first pull request waits until
+the maintainer approves the run. The project has one maintainer, so approvals
+and reviews are best-effort.
 
 [good-first-issue]:
   https://github.com/alunduil/zellij-claude-pair/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22
