@@ -23,7 +23,7 @@ You need `rustup` and Zellij.
    ```sh
    zellij plugin --floating --skip-plugin-cache \
      --configuration surface=branch -- \
-     "file:$PWD/target/wasm32-wasip1/release/zellij_claude_pair.wasm"
+     "file:$PWD/target/wasm32-wasip1/release/zellij-claude-pair.wasm"
    ```
 
    `--skip-plugin-cache` loads this build, not a cached earlier one.
