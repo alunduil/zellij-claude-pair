@@ -11,9 +11,11 @@
 # A hook belongs here once the repo holds files for it to check. Before
 # that its arguments cannot be exercised, so they would be guesses.
 
-# Vale's vendored style packages are upstream content, so findings in them
-# are not ours to fix.
-exclude: ^\.vale/styles/
+# - .vale/styles/: vendored upstream content, so findings in it are not
+#   ours to fix.
+# - CHANGELOG.md: release-plz generates it from commit subjects, which no
+#   hook can fix after the fact.
+exclude: ^(\.vale/styles/|CHANGELOG\.md$)
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks

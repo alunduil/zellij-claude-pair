@@ -26,3 +26,5 @@ README
 CHANGELOG
 ADRs?
 Nygard
+(?i)worktrees?
+Clippy
