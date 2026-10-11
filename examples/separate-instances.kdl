@@ -1,0 +1,17 @@
+// SPDX-FileCopyrightText: 2026 Alex Brandt
+//
+// SPDX-License-Identifier: MIT
+
+// Start zellij from the repository root so the relative path resolves.
+layout {
+    pane size=1 borderless=true {
+        plugin location="file:target/wasm32-wasip1/release/zellij-claude-pair.wasm" {
+            surface "branch"
+        }
+    }
+    pane {
+        plugin location="file:target/wasm32-wasip1/release/zellij-claude-pair.wasm" {
+            surface "picker"
+        }
+    }
+}

@@ -21,8 +21,16 @@ You need `rustup` and Zellij.
 3. From inside a Zellij session, open the plugin in a floating pane:
 
    ```sh
-   zellij plugin --floating --skip-plugin-cache -- \
-     "file:$PWD/target/wasm32-wasip1/release/zellij_claude_pair.wasm"
+   zellij plugin --floating --skip-plugin-cache \
+     --configuration surface=branch -- \
+     "file:$PWD/target/wasm32-wasip1/release/zellij-claude-pair.wasm"
    ```
 
    `--skip-plugin-cache` loads this build, not a cached earlier one.
+   `surface` picks what the instance shows: `branch`, `pr`, or `picker`.
+
+To load several surfaces in a new session, run from the repository root:
+
+```sh
+zellij --layout examples/separate-instances.kdl
+```

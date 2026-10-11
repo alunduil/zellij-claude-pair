@@ -65,7 +65,7 @@ jobs:
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: zellij-claude-pair
-          path: target/wasm32-wasip1/release/zellij_claude_pair.wasm
+          path: target/wasm32-wasip1/release/zellij-claude-pair.wasm
           if-no-files-found: error
           retention-days: 7
 
