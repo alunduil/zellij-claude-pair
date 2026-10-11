@@ -22,23 +22,6 @@ enum Surface {
     Picker,
 }
 
-#[derive(Debug, PartialEq, Eq)]
-enum ConfigurationError {
-    MissingSurface,
-    UnknownSurface(String),
-}
-
-impl fmt::Display for ConfigurationError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::MissingSurface => write!(f, "missing {SURFACE_KEY} configuration")?,
-            Self::UnknownSurface(name) => write!(f, "unknown {SURFACE_KEY} \"{name}\"")?,
-        }
-        let names: Vec<_> = Surface::ALL.iter().map(|surface| surface.name()).collect();
-        write!(f, "; expected one of: {}", names.join(", "))
-    }
-}
-
 impl Surface {
     const ALL: [Self; 3] = [Self::Branch, Self::Pr, Self::Picker];
 
@@ -73,6 +56,23 @@ impl Surface {
             Self::Pr => "pr",
             Self::Picker => "picker",
         }
+    }
+}
+
+#[derive(Debug, PartialEq, Eq)]
+enum ConfigurationError {
+    MissingSurface,
+    UnknownSurface(String),
+}
+
+impl fmt::Display for ConfigurationError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::MissingSurface => write!(f, "missing {SURFACE_KEY} configuration")?,
+            Self::UnknownSurface(name) => write!(f, "unknown {SURFACE_KEY} \"{name}\"")?,
+        }
+        let names: Vec<_> = Surface::ALL.iter().map(|surface| surface.name()).collect();
+        write!(f, "; expected one of: {}", names.join(", "))
     }
 }
 
