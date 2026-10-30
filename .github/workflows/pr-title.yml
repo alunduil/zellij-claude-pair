@@ -13,6 +13,8 @@ on:
   pull_request:
     types: [opened, edited, synchronize, reopened]
 
+# No concurrency group: a rebase fires synchronize and edited together, and
+# a cancelled run turns the head commit's status rollup red.
 jobs:
   pr-title:
     name: Enforce Conventional Commits
