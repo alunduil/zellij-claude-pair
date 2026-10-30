@@ -13,10 +13,8 @@ on:
   pull_request:
     types: [opened, edited, synchronize, reopened]
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
-
+# No concurrency group: Renovate pushes and edits the body at once, and
+# cancelling either run turns the head commit's status rollup red.
 jobs:
   pr-title:
     name: Enforce Conventional Commits
