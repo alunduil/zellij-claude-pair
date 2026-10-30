@@ -13,10 +13,6 @@ on:
   pull_request:
     types: [opened, edited, synchronize, reopened]
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
-
 jobs:
   pr-title:
     name: Enforce Conventional Commits
