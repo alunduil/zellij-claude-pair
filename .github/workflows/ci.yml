@@ -25,7 +25,7 @@ concurrency:
 jobs:
   hooks:
     name: Run pre-commit hooks
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 15
 
     steps:
@@ -47,7 +47,7 @@ jobs:
 
   build:
     name: Build the WASM plugin
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 15
 
     steps:
@@ -71,7 +71,7 @@ jobs:
 
   test:
     name: Run the test suite
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 15
 
     steps:
@@ -86,7 +86,7 @@ jobs:
 
   deny:
     name: Check dependency policy
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 10
 
     steps:
@@ -102,7 +102,7 @@ jobs:
   dependency-review:
     name: Review dependency changes
     if: github.event_name == 'pull_request'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 5
 
     steps:
@@ -131,7 +131,7 @@ jobs:
   # Rulesets require this check by name.
   results:
     name: Check CI results
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 5
     needs:
       - hooks
