@@ -127,3 +127,25 @@ jobs:
             pkg:cargo/notify,
             pkg:cargo/recvmsg,
             pkg:githubactions/Swatinem/rust-cache
+
+  # Rulesets pin this job's name as the one required context, so keep it
+  # stable as jobs are added or put under a matrix.
+  results:
+    name: Check CI results
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs:
+      - hooks
+      - build
+      - test
+      - deny
+      - dependency-review
+    if: always()
+    steps:
+      # Pull-request-only jobs skip on a push to main.
+      - name: Fail when any job did not succeed
+        if: >-
+          contains(needs.*.result, 'failure')
+          || contains(needs.*.result, 'cancelled')
+          || (github.event_name == 'pull_request' && contains(needs.*.result, 'skipped'))
+        run: exit 1
