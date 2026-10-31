@@ -69,8 +69,6 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  # The tests cover host-agnostic logic, so they run natively rather than
-  # under a WASI runtime.
   test:
     name: Run the test suite
     runs-on: ubuntu-latest
