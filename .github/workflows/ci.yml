@@ -142,8 +142,7 @@ jobs:
       - dependency-review
     if: always()
     steps:
-      # Pull-request-only jobs skip on a push to main.
-      - name: Fail when any job did not succeed
+      - name: Fail unless every job succeeded, allowing skips on push
         if: >-
           contains(needs.*.result, 'failure')
           || contains(needs.*.result, 'cancelled')
