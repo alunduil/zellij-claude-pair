@@ -128,8 +128,7 @@ jobs:
             pkg:cargo/recvmsg,
             pkg:githubactions/Swatinem/rust-cache
 
-  # Rulesets pin this job's name as the one required context, so keep it
-  # stable as jobs are added or put under a matrix.
+  # Rulesets require this check by name.
   results:
     name: Check CI results
     runs-on: ubuntu-latest
