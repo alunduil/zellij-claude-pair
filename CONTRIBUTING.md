@@ -33,8 +33,8 @@ pre-commit install --hook-type pre-commit --hook-type commit-msg
 To try a change by hand, follow
 [Build the plugin](docs/how-to/build-the-plugin.md).
 
-CI doesn't run the tests, so run them before you open a pull request. Target
-your host, since WASM test binaries can't execute locally:
+Run the tests on your host target, since WASM test binaries can't execute
+locally:
 
 ```sh
 cargo test --target host-tuple
@@ -52,8 +52,8 @@ Some hooks fix files in place, so stage what they touch and run again. When Vale
 flags a correct term, add it to
 `.vale/styles/config/vocabularies/zellij-claude-pair/accept.txt`.
 
-CI also builds the plugin and checks dependencies, so a clean local run can still
-fail CI.
+CI also builds the plugin, runs the tests, and checks dependencies, so a clean
+local run can still fail CI.
 
 ## Commit messages and pull requests
 
