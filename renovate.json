@@ -1,19 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:best-practices",
-    "security:openssf-scorecard",
-    "customManagers:githubActionsVersions"
-  ],
-  "timezone": "Europe/London",
-  "reviewers": ["alunduil"],
-  "labels": ["dependencies"],
-  "pre-commit": {
-    "enabled": true
-  },
-  "minimumReleaseAge": "3 days",
-  "minimumReleaseAgeBehaviour": "timestamp-optional",
-  "osvVulnerabilityAlerts": true,
+  "extends": ["github>alunduil/renovate-config:application"],
   "customManagers": [
     {
       "customType": "regex",
@@ -25,20 +12,6 @@
     }
   ],
   "packageRules": [
-    {
-      "description": "These update types carry no release timestamp, so the bake period would hold them on a pending stability check and never open a PR",
-      "matchUpdateTypes": [
-        "pin",
-        "pinDigest",
-        "digest",
-        "lockFileMaintenance",
-        "lockfileUpdate",
-        "rollback",
-        "bump",
-        "replacement"
-      ],
-      "minimumReleaseAge": null
-    },
     {
       "groupName": "GitHub Actions",
       "matchManagers": ["github-actions"]
