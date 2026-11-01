@@ -52,8 +52,8 @@ jobs:
             ${{ steps.lychee-cache.outputs.prefix }}-
 
       # The action bundles its own lychee but shares lychee.toml with the
-      # pre-commit hook. Keep its version in step with
-      # scripts/install-lychee.sh, or one may reject a key the other accepts.
+      # pre-commit hook. Keep its version in step with mise.toml, or one may
+      # reject a key the other accepts.
       - name: Check all links
         id: lychee
         uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
