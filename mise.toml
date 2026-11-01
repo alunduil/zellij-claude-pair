@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+
+[settings]
+locked = true
+lockfile_platforms = ["linux-x64"]
+
+[tools]
+cargo-deny = "0.20.2"
+# The github backend can select lychee's static musl build. The glibc build
+# aqua installs fails on hosts with an older glibc.
+"github:lycheeverse/lychee" = { version = "0.24.2", version_prefix = "lychee-v", matching = "musl" }

@@ -4,10 +4,10 @@ version = 1
 # - Markdown: inline HTML comment headers render visibly in some viewers.
 # - LICENSE: holds the conventional text; REUSE reads the SPDX-canonical
 #   copy in LICENSES/MIT.txt.
-# - Cargo.lock: Cargo rewrites it, dropping any header.
+# - Cargo.lock, mise.lock: their tools rewrite them, dropping any header.
 # - JSON: no comment syntax.
 [[annotations]]
-path = ["**/*.md", "LICENSE", "Cargo.lock", "**/*.json"]
+path = ["**/*.md", "LICENSE", "Cargo.lock", "mise.lock", "**/*.json"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Alex Brandt"
 SPDX-License-Identifier = "MIT"

@@ -32,8 +32,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - name: Install lychee
-        run: ./scripts/install-lychee.sh
+      - name: Set up lychee
+        uses: jdx/mise-action@6be3c7ed4c21d4f76b208d351d95aac273ebb76d # v5.2.4
+        with:
+          install_args: github:lycheeverse/lychee
 
       # The clippy hook compiles every dependency.
       - name: Cache Rust build
@@ -93,8 +95,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - name: Install cargo-deny
-        run: ./scripts/install-cargo-deny.sh
+      - name: Set up cargo-deny
+        uses: jdx/mise-action@6be3c7ed4c21d4f76b208d351d95aac273ebb76d # v5.2.4
+        with:
+          install_args: cargo-deny
 
       - name: Check dependencies
         run: cargo deny --locked check
