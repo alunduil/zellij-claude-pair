@@ -8,6 +8,6 @@ lockfile_platforms = ["linux-x64"]
 
 [tools]
 cargo-deny = "0.20.2"
-# aqua installs the glibc build, which needs a newer glibc than Debian
-# bookworm ships; the github backend can select the static musl build.
+# The github backend can select lychee's static musl build. The glibc build
+# aqua installs fails on hosts with an older glibc.
 "github:lycheeverse/lychee" = { version = "0.24.2", version_prefix = "lychee-v", matching = "musl" }

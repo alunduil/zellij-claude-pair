@@ -56,7 +56,6 @@ jobs:
         with:
           install_args: github:lycheeverse/lychee
 
-      # Broken links feed the report issue rather than failing the job.
       - name: Check all links
         id: lychee
         env:
