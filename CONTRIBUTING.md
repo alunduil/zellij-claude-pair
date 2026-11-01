@@ -15,12 +15,14 @@ first so we can agree on the approach before you write code.
 ## Set up
 
 You need `rustup`, Zellij, [pre-commit](https://pre-commit.com), and
-[mise](https://mise.jdx.dev). The link-check hook needs `lychee` on your
-`PATH`. On x86-64 Linux, install the versions CI uses:
+[mise](https://mise.jdx.dev). On x86-64 Linux, install the tool versions CI
+uses, including the `lychee` the link-check hook runs:
 
 ```sh
 mise install
 ```
+
+The hook finds `lychee` once mise is activated in your shell.
 
 Then install the hooks:
 

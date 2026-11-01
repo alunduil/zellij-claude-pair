@@ -51,16 +51,21 @@ jobs:
           restore-keys: |
             ${{ steps.lychee-cache.outputs.prefix }}-
 
-      # The action bundles its own lychee but shares lychee.toml with the
-      # pre-commit hook. Keep its version in step with mise.toml, or one may
-      # reject a key the other accepts.
+      - name: Set up lychee
+        uses: jdx/mise-action@6be3c7ed4c21d4f76b208d351d95aac273ebb76d # v5.2.4
+        with:
+          install_args: github:lycheeverse/lychee
+
+      # Broken links feed the report issue rather than failing the job.
       - name: Check all links
         id: lychee
-        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
-        with:
-          args: --no-progress "**/*.md"
-          fail: false
-          token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p lychee
+          exit_code=0
+          lychee --no-progress --format markdown --output lychee/out.md "**/*.md" || exit_code=$?
+          echo "exit_code=${exit_code}" >>"${GITHUB_OUTPUT}"
 
       - name: Find existing report issue
         if: steps.lychee.outputs.exit_code != 0

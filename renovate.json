@@ -5,11 +5,6 @@
     {
       "groupName": "GitHub Actions",
       "matchManagers": ["github-actions"]
-    },
-    {
-      "description": "lychee-action bundles its own lychee and shares lychee.toml with the pinned binary, so both versions move together. Follows the GitHub Actions group because the later rule wins",
-      "groupName": "lychee",
-      "matchPackageNames": ["lycheeverse/lychee", "lycheeverse/lychee-action"]
     }
   ]
 }
