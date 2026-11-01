@@ -10,7 +10,7 @@ license = "MIT"
 repository = "https://github.com/alunduil/zellij-claude-pair"
 
 [dependencies]
-zellij-tile = "0.45.1"
+zellij-tile = "=0.45.1"
 
 [lints.clippy]
 all = { level = "deny", priority = -1 }
