@@ -1,0 +1,21 @@
+{
+  "name": "zellij-claude-pair",
+  "image": "mcr.microsoft.com/devcontainers/base:3.0.12-ubuntu24.04@sha256:ec556aed93f62aa6d13fe72c5db09da4e29a7c9b87c568dbca0ee5717466926a",
+  "features": {
+    "ghcr.io/devcontainers-extra/features/apt-packages:1": {
+      "packages": "libssl-dev,pkg-config"
+    },
+    "ghcr.io/devcontainers-extra/features/mise:1": {},
+    "ghcr.io/devcontainers/features/rust:1": {
+      "components": "none"
+    }
+  },
+  "containerEnv": {
+    "MISE_TRUSTED_CONFIG_PATHS": "${containerWorkspaceFolder}"
+  },
+  "remoteUser": "vscode",
+  "remoteEnv": {
+    "PATH": "/home/vscode/.local/share/mise/shims:${containerEnv:PATH}"
+  },
+  "postCreateCommand": "rustup toolchain install && mise install"
+}
