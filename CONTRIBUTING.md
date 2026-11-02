@@ -28,6 +28,9 @@ Then install the hooks:
 pre-commit install --hook-type pre-commit --hook-type commit-msg
 ```
 
+The [dev container](.devcontainer/devcontainer.json) does the `rustup` and
+`mise install` steps for you. It doesn't include Zellij or pre-commit.
+
 ## Build and test
 
 To try a change by hand, follow
