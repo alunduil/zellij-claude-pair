@@ -6,27 +6,28 @@
 # Renovate edits the Dependency Dashboard issue as updates change, so an
 # untouched dashboard is the only sign that it has stopped.
 name: Check Renovate liveness
-description: Fail if the Dependency Dashboard is missing or stale.
+description: Report whether the Dependency Dashboard is missing or stale.
 
-inputs:
-  preview:
-    description: >-
-      Warn instead of failing on a stale dashboard, so a Renovate outage
-      doesn't turn every pull request red.
-    default: "false"
+outputs:
+  problem:
+    description: Why Renovate looks stopped; empty when it looks healthy.
+    value: ${{ steps.dashboard.outputs.problem }}
 
 runs:
   using: composite
   steps:
-    - name: Fail if the Dependency Dashboard is stale
+    - name: Read the Dependency Dashboard
+      id: dashboard
       uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
-      env:
-        PREVIEW: ${{ inputs.preview }}
       with:
         script: |
           const STALE_DAYS = 10;
           const MS_PER_DAY = 86_400_000;
-          const report = process.env.PREVIEW === 'true' ? core.warning : core.setFailed;
+
+          const reportProblem = (problem) => {
+            core.warning(problem);
+            core.setOutput('problem', problem);
+          };
 
           const q = [
             `repo:${context.repo.owner}/${context.repo.repo}`,
@@ -40,7 +41,7 @@ runs:
           const dashboard = data.items[0];
 
           if (!dashboard) {
-            report(
+            reportProblem(
               'No open Dependency Dashboard: Renovate is uninstalled or ' +
               'disabled on this repository. Reinstall the app or re-enable ' +
               'the repository.',
@@ -54,7 +55,7 @@ runs:
             `${ageDays.toFixed(1)} days ago`;
 
           if (ageDays > STALE_DAYS) {
-            report(
+            reportProblem(
               `${summary}: Renovate has likely stopped running. Read the ` +
               'Mend job log, then tick the manual-run box on the dashboard.',
             );

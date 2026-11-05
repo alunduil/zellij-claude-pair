@@ -149,10 +149,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+      # Ignores the problem output, so a Renovate outage doesn't turn every pull
+      # request red.
       - name: Check Renovate liveness
         uses: ./.github/actions/check-renovate-liveness
-        with:
-          preview: "true"
 
   external-links-preview:
     name: Preview external link check

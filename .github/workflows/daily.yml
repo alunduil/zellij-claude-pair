@@ -28,4 +28,9 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Check Renovate liveness
+        id: liveness
         uses: ./.github/actions/check-renovate-liveness
+
+      - name: Fail if Renovate has stopped
+        if: steps.liveness.outputs.problem != ''
+        run: exit 1
