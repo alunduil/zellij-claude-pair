@@ -24,11 +24,6 @@ runs:
           const STALE_DAYS = 10;
           const MS_PER_DAY = 86_400_000;
 
-          const reportProblem = (problem) => {
-            core.warning(problem);
-            core.setOutput('problem', problem);
-          };
-
           const q = [
             `repo:${context.repo.owner}/${context.repo.repo}`,
             'is:issue',
@@ -41,7 +36,8 @@ runs:
           const dashboard = data.items[0];
 
           if (!dashboard) {
-            reportProblem(
+            core.setOutput(
+              'problem',
               'No open Dependency Dashboard: Renovate is uninstalled or ' +
               'disabled on this repository. Reinstall the app or re-enable ' +
               'the repository.',
@@ -55,7 +51,8 @@ runs:
             `${ageDays.toFixed(1)} days ago`;
 
           if (ageDays > STALE_DAYS) {
-            reportProblem(
+            core.setOutput(
+              'problem',
               `${summary}: Renovate has likely stopped running. Read the ` +
               'Mend job log, then tick the manual-run box on the dashboard.',
             );

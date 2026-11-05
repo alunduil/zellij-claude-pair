@@ -132,10 +132,8 @@ jobs:
             pkg:cargo/recvmsg,
             pkg:githubactions/Swatinem/rust-cache
 
-  # The two previews below run what the scheduled workflows run, on the same
-  # runner, so a Renovate update to either meets it before merge. They hold no
-  # write permission. Opening the link report issue stays unverified, so
-  # renovate.json keeps that action manual.
+  # The previews run the scheduled workflows' checks on the same runner, without
+  # write permission, so a Renovate update meets them before merge.
   renovate-liveness-preview:
     name: Preview Renovate liveness check
     if: github.event_name == 'pull_request'
@@ -149,10 +147,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      # Ignores the problem output, so a Renovate outage doesn't turn every pull
-      # request red.
       - name: Check Renovate liveness
+        id: liveness
         uses: ./.github/actions/check-renovate-liveness
+
+      # A Renovate outage shouldn't turn every pull request red.
+      - name: Warn if Renovate has stopped
+        if: steps.liveness.outputs.problem != ''
+        env:
+          PROBLEM: ${{ steps.liveness.outputs.problem }}
+        run: echo "::warning::${PROBLEM}"
 
   external-links-preview:
     name: Preview external link check

@@ -33,4 +33,8 @@ jobs:
 
       - name: Fail if Renovate has stopped
         if: steps.liveness.outputs.problem != ''
-        run: exit 1
+        env:
+          PROBLEM: ${{ steps.liveness.outputs.problem }}
+        run: |
+          echo "::error::${PROBLEM}"
+          exit 1
