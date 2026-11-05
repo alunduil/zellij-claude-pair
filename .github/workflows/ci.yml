@@ -132,8 +132,8 @@ jobs:
             pkg:cargo/recvmsg,
             pkg:githubactions/Swatinem/rust-cache
 
-  # The previews run the scheduled workflows' checks on the same runner, without
-  # write permission, so a Renovate update meets them before merge.
+  # The previews test what only the scheduled workflows use, so an update to it
+  # can't merge untested. Keep them read-only.
   renovate-liveness-preview:
     name: Preview Renovate liveness check
     if: github.event_name == 'pull_request'

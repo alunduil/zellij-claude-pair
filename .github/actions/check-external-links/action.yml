@@ -2,9 +2,8 @@
 #
 # SPDX-License-Identifier: MIT
 ---
-# External URLs rot independently of our diffs, so a broken link sets the
-# broken-links output rather than failing the step. Any other lychee failure
-# fails it. Needs a checkout.
+# Needs a checkout. Broken links set an output, so each caller decides what they
+# mean.
 name: Check external links
 description: Run lychee over every Markdown file and write lychee/out.md.
 
@@ -23,8 +22,8 @@ runs:
       shell: bash
       run: echo "prefix=lychee-${{ hashFiles('lychee.toml') }}" >>"${GITHUB_OUTPUT}"
 
-    # lychee expires entries after a day, so only a same-day re-dispatch
-    # reuses them, sparing rate-limited hosts a second sweep.
+    # lychee expires entries after a day, so only a same-day run reuses them,
+    # sparing rate-limited hosts a second sweep.
     - name: Cache lychee results
       uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
@@ -47,6 +46,7 @@ runs:
         mkdir -p lychee
         exit_code=0
         lychee --no-progress --format markdown --output lychee/out.md "**/*.md" || exit_code=$?
+        # lychee exits 2 for broken links alone; other codes mean it couldn't run.
         case "${exit_code}" in
           0) broken_links=false ;;
           2) broken_links=true ;;

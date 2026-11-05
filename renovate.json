@@ -12,7 +12,7 @@
       "matchManagers": ["github-actions"]
     },
     {
-      "description": "CI runs every action and runner image on the pull request, so a green major is verified",
+      "description": "CI runs actions and runner images on the pull request, so a green major is verified",
       "matchManagers": ["github-actions"],
       "matchUpdateTypes": ["major"],
       "automerge": true
