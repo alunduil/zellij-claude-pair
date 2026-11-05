@@ -132,6 +132,62 @@ jobs:
             pkg:cargo/recvmsg,
             pkg:githubactions/Swatinem/rust-cache
 
+  # The previews test what only the scheduled workflows use, so an update to it
+  # can't merge untested. Keep them read-only.
+  renovate-liveness-preview:
+    name: Preview Renovate liveness check
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Check Renovate liveness
+        id: liveness
+        uses: ./.github/actions/check-renovate-liveness
+
+      # A Renovate outage shouldn't turn every pull request red.
+      - name: Warn if Renovate has stopped
+        if: steps.liveness.outputs.problem != ''
+        env:
+          PROBLEM: ${{ steps.liveness.outputs.problem }}
+        run: echo "::warning::${PROBLEM}"
+
+  external-links-preview:
+    name: Preview external link check
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Check external links
+        uses: ./.github/actions/check-external-links
+
+  devcontainer:
+    name: Build the devcontainer
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Build the devcontainer and run the tests in it
+        uses: devcontainers/ci@513af61f4de4f75d37e4438f184ba4358f0fc1ca # v0.3.1900000450
+        with:
+          push: never
+          runCmd: >-
+            test -z "$(mise ls --missing)"
+            && cargo test --locked --target host-tuple
+
   # Rulesets require this check by name.
   results:
     name: Check CI results
@@ -143,6 +199,9 @@ jobs:
       - test
       - deny
       - dependency-review
+      - renovate-liveness-preview
+      - external-links-preview
+      - devcontainer
     if: always()
     steps:
       - name: Fail unless every job succeeded, allowing skips on push

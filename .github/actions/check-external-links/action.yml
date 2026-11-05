@@ -1,0 +1,55 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+---
+# Needs a checkout. Broken links set an output, so each caller decides what they
+# mean.
+name: Check external links
+description: Run lychee over every Markdown file and write lychee/out.md.
+
+outputs:
+  broken-links:
+    description: Whether lychee/out.md lists broken links, "true" or "false".
+    value: ${{ steps.lychee.outputs.broken-links }}
+
+runs:
+  using: composite
+  steps:
+    # `key` and `restore-keys` must share a prefix, or every restore misses
+    # silently.
+    - name: Derive the lychee cache prefix
+      id: lychee-cache
+      shell: bash
+      run: echo "prefix=lychee-${{ hashFiles('lychee.toml') }}" >>"${GITHUB_OUTPUT}"
+
+    # lychee expires entries after a day, so only a same-day run reuses them,
+    # sparing rate-limited hosts a second sweep.
+    - name: Cache lychee results
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: .lycheecache
+        key: ${{ steps.lychee-cache.outputs.prefix }}-${{ github.run_id }}
+        restore-keys: |
+          ${{ steps.lychee-cache.outputs.prefix }}-
+
+    - name: Set up lychee
+      uses: jdx/mise-action@6612f0ef07ed2a736cd1e00a94a065522dd41195 # v5.2.5
+      with:
+        install_args: github:lycheeverse/lychee
+
+    - name: Check all links
+      id: lychee
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: |
+        mkdir -p lychee
+        exit_code=0
+        lychee --no-progress --format markdown --output lychee/out.md "**/*.md" || exit_code=$?
+        # lychee exits 2 for broken links alone; other codes mean it couldn't run.
+        case "${exit_code}" in
+          0) broken_links=false ;;
+          2) broken_links=true ;;
+          *) exit "${exit_code}" ;;
+        esac
+        echo "broken-links=${broken_links}" >>"${GITHUB_OUTPUT}"

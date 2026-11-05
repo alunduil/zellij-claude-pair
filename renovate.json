@@ -1,10 +1,31 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>alunduil/renovate-config:application"],
+  "extends": [
+    "github>alunduil/renovate-config:application",
+    ":automergeMinor",
+    ":automergeDigest"
+  ],
+  "platformAutomerge": false,
   "packageRules": [
     {
       "groupName": "GitHub Actions",
       "matchManagers": ["github-actions"]
+    },
+    {
+      "description": "CI runs actions and runner images on the pull request, so a green major is verified",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["major"],
+      "automerge": true
+    },
+    {
+      "description": "CI never loads the plugin in zellij, so a new plugin API can break it with every check green",
+      "matchDepNames": ["zellij-tile"],
+      "automerge": false
+    },
+    {
+      "description": "This action only writes the link report issue, so no check can run it before merge",
+      "matchDepNames": ["peter-evans/create-issue-from-file"],
+      "automerge": false
     }
   ]
 }
