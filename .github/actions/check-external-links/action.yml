@@ -3,14 +3,15 @@
 # SPDX-License-Identifier: MIT
 ---
 # External URLs rot independently of our diffs, so a broken link sets the
-# exit-code output rather than failing the step. Needs a checkout.
+# broken-links output rather than failing the step. Any other lychee failure
+# fails it. Needs a checkout.
 name: Check external links
 description: Run lychee over every Markdown file and write lychee/out.md.
 
 outputs:
-  exit-code:
-    description: lychee's exit code; nonzero means lychee/out.md lists breakage.
-    value: ${{ steps.lychee.outputs.exit_code }}
+  broken-links:
+    description: Whether lychee/out.md lists broken links, "true" or "false".
+    value: ${{ steps.lychee.outputs.broken-links }}
 
 runs:
   using: composite
@@ -46,4 +47,9 @@ runs:
         mkdir -p lychee
         exit_code=0
         lychee --no-progress --format markdown --output lychee/out.md "**/*.md" || exit_code=$?
-        echo "exit_code=${exit_code}" >>"${GITHUB_OUTPUT}"
+        case "${exit_code}" in
+          0) broken_links=false ;;
+          2) broken_links=true ;;
+          *) exit "${exit_code}" ;;
+        esac
+        echo "broken-links=${broken_links}" >>"${GITHUB_OUTPUT}"
