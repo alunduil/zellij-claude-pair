@@ -1,7 +1,6 @@
 # Agent instructions
 
-Audience: AI coding assistants. Claude Code reads [CLAUDE.md](CLAUDE.md),
-which imports this file. Humans start at [docs/](docs/README.md).
+Audience: AI coding assistants. Humans start at [docs/](docs/README.md).
 
 ## Project
 
