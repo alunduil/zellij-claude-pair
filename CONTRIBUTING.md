@@ -29,8 +29,12 @@ pre-commit install --hook-type pre-commit --hook-type commit-msg
 ```
 
 The [dev container](.devcontainer/devcontainer.json) installs `rustup`, the
-pinned Rust toolchain, and the `mise.toml` tools. It doesn't include Zellij or
-pre-commit.
+pinned Rust toolchain, the `mise.toml` tools, and Claude Code. It doesn't
+include Zellij or pre-commit.
+
+Claude Code in the container starts signed in when the host exports
+`CLAUDE_CODE_OAUTH_TOKEN`. Create the token with `claude setup-token`.
+Conversations in the container survive a rebuild.
 
 ## Build and test
 
