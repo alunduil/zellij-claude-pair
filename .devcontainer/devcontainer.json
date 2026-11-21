@@ -8,14 +8,20 @@
     "ghcr.io/devcontainers-extra/features/mise:1": {},
     "ghcr.io/devcontainers/features/rust:1": {
       "components": "none"
-    }
+    },
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1": {}
   },
+  "mounts": [
+    "source=claude-code-config-${devcontainerId},target=/home/vscode/.claude,type=volume"
+  ],
   "containerEnv": {
+    "CLAUDE_CONFIG_DIR": "/home/vscode/.claude",
     "MISE_TRUSTED_CONFIG_PATHS": "${containerWorkspaceFolder}"
   },
   "remoteUser": "vscode",
   "remoteEnv": {
+    "CLAUDE_CODE_OAUTH_TOKEN": "${localEnv:CLAUDE_CODE_OAUTH_TOKEN}",
     "PATH": "/home/vscode/.local/share/mise/shims:${containerEnv:PATH}"
   },
-  "postCreateCommand": "rustup toolchain install && mise install"
+  "postCreateCommand": "sudo chown \"$(id -un):\" \"$CLAUDE_CONFIG_DIR\" && rustup toolchain install && mise install"
 }
