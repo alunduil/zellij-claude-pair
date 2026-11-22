@@ -19,6 +19,11 @@
       "automerge": true
     },
     {
+      "description": "No release job runs these composite actions, and CI runs both on the pull request, so a green update is verified",
+      "matchFileNames": [".github/actions/**"],
+      "automerge": true
+    },
+    {
       "description": "CI never loads the plugin in zellij, so a new plugin API can break it with every check green",
       "matchDepNames": ["zellij-tile"],
       "automerge": false
