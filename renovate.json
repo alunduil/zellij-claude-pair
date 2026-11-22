@@ -9,18 +9,9 @@
   "platformAutomerge": false,
   "packageRules": [
     {
+      "description": "CI runs every action, composite action, and runner image on the pull request, and no release job runs them, so a green update is verified",
       "groupName": "GitHub Actions",
-      "matchManagers": ["github-actions"]
-    },
-    {
-      "description": "CI runs actions and runner images on the pull request, so a green major is verified",
       "matchManagers": ["github-actions"],
-      "matchUpdateTypes": ["major"],
-      "automerge": true
-    },
-    {
-      "description": "No release job runs these composite actions, and CI runs both on the pull request, so a green update is verified",
-      "matchFileNames": [".github/actions/**"],
       "automerge": true
     },
     {
