@@ -24,7 +24,7 @@
       "automerge": false
     },
     {
-      "description": "This action only writes the link report issue, so no check can run it before merge",
+      "description": "This action only writes report issues, so no check can run it before merge",
       "matchDepNames": ["peter-evans/create-issue-from-file"],
       "automerge": false
     }

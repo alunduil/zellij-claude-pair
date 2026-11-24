@@ -1,0 +1,44 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+---
+# The calling job needs `issues: write`, and a concurrency group so two runs
+# can't both open a report.
+name: Report issue
+description: Open the report issue with this title, or update the open one.
+
+inputs:
+  title:
+    description: Title identifying the report issue.
+    required: true
+  content-filepath:
+    description: Path to the issue body.
+    required: true
+  labels:
+    description: Comma-separated labels.
+    required: true
+
+runs:
+  using: composite
+  steps:
+    # Search also returns similar titles, so a looser match could overwrite an
+    # unrelated issue.
+    - name: Find existing report issue
+      id: report
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        TITLE: ${{ inputs.title }}
+      run: |
+        number=$(gh issue list --repo "${GITHUB_REPOSITORY}" --state open \
+          --search "in:title \"${TITLE}\"" --json number,title \
+          --jq 'map(select(.title == env.TITLE))[0].number // empty')
+        echo "number=${number}" >>"${GITHUB_OUTPUT}"
+
+    - name: Open or update report issue
+      uses: peter-evans/create-issue-from-file@fca9117c27cdc29c6c4db3b86c48e4115a786710 # v6.0.0
+      with:
+        title: ${{ inputs.title }}
+        content-filepath: ${{ inputs.content-filepath }}
+        issue-number: ${{ steps.report.outputs.number }}
+        labels: ${{ inputs.labels }}
