@@ -38,3 +38,58 @@ jobs:
         run: |
           echo "::error::${PROBLEM}"
           exit 1
+
+  # Advisories appear independently of our diffs, so they are reported rather
+  # than blocking.
+  advisories:
+    name: Check advisories
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+    # Ref-less so a manual dispatch and the schedule cannot race on the shared
+    # report issue.
+    concurrency:
+      group: ${{ github.workflow }}-advisories
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up cargo-deny
+        uses: jdx/mise-action@d5574b52816a478f9d4e6529a3f6ff17a8a36785 # v5.2.8
+        with:
+          install_args: cargo-deny
+
+      # Installs the toolchain too, whose progress output would otherwise land
+      # in the report.
+      - name: Fetch crates
+        run: cargo fetch --locked
+
+      - name: Check advisories
+        id: deny
+        run: |
+          exit_code=0
+          summary=$(cargo deny --color never --locked check advisories 2>findings.txt) \
+            || exit_code=$?
+          cat findings.txt
+          # cargo deny also exits 1 when it can't run; only the summary tells
+          # the two apart.
+          case "${exit_code}:${summary}" in
+            0:*) found=false ;;
+            *:'advisories FAILED') found=true ;;
+            *) exit "${exit_code}" ;;
+          esac
+          echo "found=${found}" >>"${GITHUB_OUTPUT}"
+          # Advisory text can hold a backtick fence of its own.
+          { echo '~~~~~~text'; cat findings.txt; echo '~~~~~~'; } >advisories.md
+
+      - name: Report advisories
+        if: steps.deny.outputs.found == 'true'
+        uses: ./.github/actions/report-issue
+        with:
+          title: Advisory Report
+          content-filepath: ./advisories.md
+          labels: dependencies

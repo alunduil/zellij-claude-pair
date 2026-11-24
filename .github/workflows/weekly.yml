@@ -38,21 +38,10 @@ jobs:
         id: links
         uses: ./.github/actions/check-external-links
 
-      - name: Find existing report issue
+      - name: Report broken links
         if: steps.links.outputs.broken-links == 'true'
-        id: report
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          number=$(gh issue list --repo "${{ github.repository }}" --state open \
-            --search 'Link Checker Report in:title' --json number --jq '.[0].number // empty')
-          echo "number=${number}" >> "${GITHUB_OUTPUT}"
-
-      - name: Open or update report issue
-        if: steps.links.outputs.broken-links == 'true'
-        uses: peter-evans/create-issue-from-file@fca9117c27cdc29c6c4db3b86c48e4115a786710 # v6.0.0
+        uses: ./.github/actions/report-issue
         with:
           title: Link Checker Report
           content-filepath: ./lychee/out.md
-          issue-number: ${{ steps.report.outputs.number }}
           labels: documentation

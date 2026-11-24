@@ -100,8 +100,10 @@ jobs:
         with:
           install_args: cargo-deny
 
+      # An advisory against an unchanged lock file would fail every pull request,
+      # so daily.yml checks advisories.
       - name: Check dependencies
-        run: cargo deny --locked check
+        run: cargo deny --locked check bans licenses sources
 
   dependency-review:
     name: Review dependency changes
