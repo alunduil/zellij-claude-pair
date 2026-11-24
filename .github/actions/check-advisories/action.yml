@@ -20,8 +20,8 @@ runs:
       with:
         install_args: cargo-deny
 
-    # Installs the toolchain too, whose progress output would otherwise land
-    # in advisories.md.
+    # Also installs the toolchain, which keeps its progress output out of
+    # advisories.md.
     - name: Fetch crates
       shell: bash
       run: cargo fetch --locked
@@ -43,7 +43,7 @@ runs:
         esac
         echo "advisories=${advisories}" >>"${GITHUB_OUTPUT}"
 
-    # Advisory text can hold a backtick fence of its own.
+    # Advisory text can contain backtick fences.
     - name: Write advisories.md
       shell: bash
       run: "{ echo '~~~~~~text'; cat findings.txt; echo '~~~~~~'; } >advisories.md"

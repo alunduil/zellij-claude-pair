@@ -6,7 +6,7 @@ name: Daily
 
 on:
   schedule:
-    # Only a failed run sends email, so a daily run adds no noise.
+    # A run that finds nothing sends no email, so a daily run adds no noise.
     - cron: "0 9 * * *"
       timezone: Europe/London
   workflow_dispatch:
@@ -39,8 +39,6 @@ jobs:
           echo "::error::${PROBLEM}"
           exit 1
 
-  # Advisories appear independently of our diffs, so they are reported rather
-  # than blocking.
   advisories:
     name: Check advisories
     runs-on: ubuntu-26.04
@@ -48,8 +46,7 @@ jobs:
     permissions:
       contents: read
       issues: write
-    # Ref-less so a manual dispatch and the schedule cannot race on the shared
-    # report issue.
+    # Ref-less, so a dispatch and the schedule can't race on the report issue.
     concurrency:
       group: ${{ github.workflow }}-advisories
       cancel-in-progress: true

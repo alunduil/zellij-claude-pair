@@ -21,8 +21,8 @@ inputs:
 runs:
   using: composite
   steps:
-    # Search matches word stems, so without the exact comparison an unrelated
-    # issue with a similar title would be overwritten.
+    # Search also returns similar titles, so a looser match could overwrite an
+    # unrelated issue.
     - name: Find existing report issue
       id: report
       shell: bash
