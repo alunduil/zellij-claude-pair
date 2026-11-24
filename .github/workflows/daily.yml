@@ -58,36 +58,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Set up cargo-deny
-        uses: jdx/mise-action@d5574b52816a478f9d4e6529a3f6ff17a8a36785 # v5.2.8
-        with:
-          install_args: cargo-deny
-
-      # Installs the toolchain too, whose progress output would otherwise land
-      # in the report.
-      - name: Fetch crates
-        run: cargo fetch --locked
-
       - name: Check advisories
-        id: deny
-        run: |
-          exit_code=0
-          summary=$(cargo deny --color never --locked check advisories 2>findings.txt) \
-            || exit_code=$?
-          cat findings.txt
-          # cargo deny also exits 1 when it can't run; only the summary tells
-          # the two apart.
-          case "${exit_code}:${summary}" in
-            0:*) found=false ;;
-            *:'advisories FAILED') found=true ;;
-            *) exit "${exit_code}" ;;
-          esac
-          echo "found=${found}" >>"${GITHUB_OUTPUT}"
-          # Advisory text can hold a backtick fence of its own.
-          { echo '~~~~~~text'; cat findings.txt; echo '~~~~~~'; } >advisories.md
+        id: advisories
+        uses: ./.github/actions/check-advisories
 
       - name: Report advisories
-        if: steps.deny.outputs.found == 'true'
+        if: steps.advisories.outputs.advisories == 'true'
         uses: ./.github/actions/report-issue
         with:
           title: Advisory Report

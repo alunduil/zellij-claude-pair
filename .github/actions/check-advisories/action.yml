@@ -1,0 +1,49 @@
+# SPDX-FileCopyrightText: 2026 Alex Brandt
+#
+# SPDX-License-Identifier: MIT
+---
+# Needs a checkout. Advisories set an output, so each caller decides what they
+# mean.
+name: Check advisories
+description: Check the lock file for advisories and write advisories.md.
+
+outputs:
+  advisories:
+    description: Whether advisories.md lists advisories, "true" or "false".
+    value: ${{ steps.deny.outputs.advisories }}
+
+runs:
+  using: composite
+  steps:
+    - name: Set up cargo-deny
+      uses: jdx/mise-action@d5574b52816a478f9d4e6529a3f6ff17a8a36785 # v5.2.8
+      with:
+        install_args: cargo-deny
+
+    # Installs the toolchain too, whose progress output would otherwise land
+    # in advisories.md.
+    - name: Fetch crates
+      shell: bash
+      run: cargo fetch --locked
+
+    - name: Check the lock file
+      id: deny
+      shell: bash
+      run: |
+        exit_code=0
+        summary=$(cargo deny --color never --locked check advisories 2>findings.txt) \
+          || exit_code=$?
+        cat findings.txt
+        # cargo deny also exits 1 when it can't run; only the summary tells
+        # the two apart.
+        case "${exit_code}:${summary}" in
+          0:*) advisories=false ;;
+          *:'advisories FAILED') advisories=true ;;
+          *) exit "${exit_code}" ;;
+        esac
+        echo "advisories=${advisories}" >>"${GITHUB_OUTPUT}"
+
+    # Advisory text can hold a backtick fence of its own.
+    - name: Write advisories.md
+      shell: bash
+      run: "{ echo '~~~~~~text'; cat findings.txt; echo '~~~~~~'; } >advisories.md"
