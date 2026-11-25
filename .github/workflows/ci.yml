@@ -100,8 +100,10 @@ jobs:
         with:
           install_args: cargo-deny
 
+      # An advisory against an unchanged lock file would fail every pull request,
+      # so daily.yml checks advisories.
       - name: Check dependencies
-        run: cargo deny --locked check
+        run: cargo deny --locked check bans licenses sources
 
   dependency-review:
     name: Review dependency changes
@@ -171,6 +173,19 @@ jobs:
       - name: Check external links
         uses: ./.github/actions/check-external-links
 
+  advisories-preview:
+    name: Preview advisory check
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Check advisories
+        uses: ./.github/actions/check-advisories
+
   devcontainer:
     name: Build the devcontainer
     runs-on: ubuntu-26.04
@@ -201,6 +216,7 @@ jobs:
       - dependency-review
       - renovate-liveness-preview
       - external-links-preview
+      - advisories-preview
       - devcontainer
     if: always()
     steps:

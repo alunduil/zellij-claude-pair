@@ -67,7 +67,7 @@ repos:
   # Pinned for per-directory config resolution, which .github/.markdownlint.yaml
   # depends on to scope its rule to that directory.
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.24.1
+    rev: v0.24.2
     hooks:
       - id: markdownlint-cli2
         args: ["--fix"]
@@ -75,7 +75,7 @@ repos:
   # Vale fails only on error-severity findings, so printing warnings here
   # would be noise the hook never acts on.
   - repo: https://github.com/errata-ai/vale
-    rev: v3.27.0
+    rev: v3.28.1
     hooks:
       - id: vale
         args: [--minAlertLevel=error]
