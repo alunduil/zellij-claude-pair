@@ -7,7 +7,7 @@ locked = true
 lockfile_platforms = ["linux-x64"]
 
 [tools]
-cargo-deny = "0.22.0"
+cargo-deny = "0.22.1"
 # The github backend can select lychee's static musl build. The glibc build
 # aqua installs fails on hosts with an older glibc.
 "github:lycheeverse/lychee" = { version = "0.24.2", version_prefix = "lychee-v", matching = "musl" }
