@@ -203,6 +203,16 @@ jobs:
             test -z "$(mise ls --missing)"
             && cargo test --locked --target host-tuple
 
+  # Rulesets require this check by name. It skips outside Renovate branches,
+  # so it stays out of results, which fails on a skip.
+  check-renovate-commits:
+    name: Check Renovate branch commits
+    if: github.event_name == 'pull_request'
+    uses: alunduil/renovate-config/.github/workflows/check-renovate-commits.yml@6052341d076d02929cd58ba8a5245d4cf13955af # main
+    permissions:
+      contents: read
+      pull-requests: read
+
   # Rulesets require this check by name.
   results:
     name: Check CI results
