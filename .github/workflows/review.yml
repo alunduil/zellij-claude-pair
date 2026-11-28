@@ -2,8 +2,8 @@
 #
 # SPDX-License-Identifier: MIT
 ---
-# A review starts no pull_request run, so the owner's approval re-runs the
-# failed CI runs on that head for check-renovate-commits to see it.
+# A review starts no pull_request run, so check-renovate-commits sees an
+# approval only when its failed run is re-run.
 name: Review
 
 on:

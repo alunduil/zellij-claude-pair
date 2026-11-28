@@ -203,8 +203,8 @@ jobs:
             test -z "$(mise ls --missing)"
             && cargo test --locked --target host-tuple
 
-  # Rulesets require this check by name. It skips outside Renovate branches,
-  # so it stays out of results, which fails on a skip.
+  # Rulesets require this check directly: it skips outside Renovate branches,
+  # and results fails on any skipped job.
   check-renovate-commits:
     name: Check Renovate branch commits
     if: github.event_name == 'pull_request'
